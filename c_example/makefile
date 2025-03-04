@@ -1,13 +1,13 @@
-TARGET = infinit limit celsius2fahr fahr2celsius
+TARGET = infinit limit celsius2fahr fahr2celsius charNumber
 
-all : infinit limit fahr2celsius celsius2fahr
+all : $(TARGET)
 
 infinit : infinit.c
 	cc -o infinit infinit.c
 limit : $@
 fahr2celsius : $@
 celsius2fahr : $@
-
+charNumber : $@
 
 clean : 
 	rm $(TARGET)
