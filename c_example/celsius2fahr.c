@@ -3,7 +3,9 @@
 
 int main(){
     int celsius;
-    celsius = 15;
+    //celsius = 15;
+    printf("input celsius temp : ");
+    scanf("%d", &celsius);  
     printf("celsius temp : %d \n", celsius);
 
     double fahr;
