@@ -1,4 +1,4 @@
-TARGET = infinit limit celsius2fahr fahr2celsius charNumber triangle triangle2
+TARGET = infinit limit celsius2fahr fahr2celsius charNumber triangle triangle2 arithmethics increment literal practice genderRatio
 
 all : $(TARGET)
 
@@ -10,6 +10,11 @@ celsius2fahr : $@
 charNumber : $@
 triangle : $@
 triangle2 : $@
+arithmethics : $@
+increment : $@
+literal : $@
+practice : $@
+genderRatio : $@
 
 clean : 
 	rm $(TARGET)
