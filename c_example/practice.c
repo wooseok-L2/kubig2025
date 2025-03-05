@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int main(void){
+/*int main(void){
 
     int kor = 3;
     int eng = 5;
@@ -17,5 +17,67 @@ int main(void){
     printf("total credits : %d \n", credits);
     printf("grade : %.1lf \n", grade);
     printf("res : %d \n", res);
+
+}*/
+
+/*int main(void){
+
+    int res;
+    
+    res = (sizeof(short) > sizeof(long)) ? 1 : 0;
+    printf("%s \n", sizeof(short)>sizeof(long) ? "short" : "long");
+
+    return 0;
+}*/
+
+// int main(void){
+
+//     int seat = 70;
+//     int visitor = 65;
+//     double rate;
+
+//     rate = (double)visitor/(double) seat*100;
+
+//     printf("rate : %.2lf%% \n", rate);
+
+//     return 0;
+// }
+
+// int main(void){
+
+//     int hour, min, sec;
+//     double time;
+//     double temp_min;
+    
+//     print("Enter hour : \n");
+//     scanf("%.2lf", &time);
+
+//     temp_min = time * 6;
+
+//     hour = temp_time / 60;
+
+//     min = temp_time % 60;
+
+//     sec = ((temp_time - hour*60)-min);
+
+//     return 0;
+// }
+
+// 
+
+int main(void){
+
+    double kg;
+    double cm;
+    double bmi;
+
+    printf("Enter weight and height : ");
+    scanf("%lf %lf", &kg, &cm);
+
+    bmi = kg/((cm/100)*(cm/100));
+
+    printf("bmi is %.2lf, %s \n", bmi, (20<=bmi && bmi<25) ? "standard" : "manage your weight");
+
+    return 0;
 
 }

@@ -1,4 +1,4 @@
-TARGET = infinit limit celsius2fahr fahr2celsius charNumber triangle triangle2 arithmethics increment literal practice genderRatio
+TARGET = infinit limit celsius2fahr fahr2celsius charNumber triangle triangle2 arithmethics increment literal genderRatio compare practice sizeof oddeven fourbit
 
 all : $(TARGET)
 
@@ -15,6 +15,10 @@ increment : $@
 literal : $@
 practice : $@
 genderRatio : $@
+compare : $@
+sizeof: $@
+oddeven: $@
+fourbit: $@
 
 clean : 
 	rm $(TARGET)
