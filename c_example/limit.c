@@ -2,7 +2,7 @@
 #include <limits.h>
 
 void printHello();
-// int main(int argc, char* argv[])
+// int main(int argc, char* argv[]) -> 인수 받을 때
 int main(void){
     
     printHello();
