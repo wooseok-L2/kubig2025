@@ -65,19 +65,55 @@
 
 // 
 
-int main(void){
+// int main(void){
 
-    double kg;
-    double cm;
-    double bmi;
+//     double kg;
+//     double cm;
+//     double bmi;
 
-    printf("Enter weight and height : ");
-    scanf("%lf %lf", &kg, &cm);
+//     printf("Enter weight and height : ");
+//     scanf("%lf %lf", &kg, &cm);
 
-    bmi = kg/((cm/100)*(cm/100));
+//     bmi = kg/((cm/100)*(cm/100));
 
-    printf("bmi is %.2lf, %s \n", bmi, (20<=bmi && bmi<25) ? "standard" : "manage your weight");
+//     printf("bmi is %.2lf, %s \n", bmi, (20<=bmi && bmi<25) ? "standard" : "manage your weight");
 
-    return 0;
+//     return 0;
 
-}
+// }
+
+// int main(void){
+    
+//     printf("It is calculator for integer\n");
+//     printf("Enter the integer \n");
+    
+//     int a;
+//     int b;
+//     char c;
+//     int res;
+    
+//     scanf("%d %c %d", &a, &c, &b);
+    
+//     if(c=='+'){
+//         res = a + b;
+//     } 
+//     else if(c=='-'){
+//         res = a - b;
+//     } 
+//     else if(c=='*'){
+//         res = a * b;
+//     } 
+//     else if(c=='/'){
+//         res = a / b;
+//     } 
+//     else if(c=='%'){
+//         res = a % b;
+//     } 
+//     else{
+//         printf("Try again");
+//     }
+    
+//     printf("%d %c %d = %d \n", a, c, b, res);
+
+//     return 0;
+// }

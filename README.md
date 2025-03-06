@@ -7,10 +7,16 @@
 
 - 첫 번째 변경 커밋입니다.
 - second changed by local
-- C 언어 1~3장
+- C chapter 1~3
 
 ---
 ## 2025-03-05
 ---
 
-- 
+- C chapter 4
+
+---
+## 2025-03-06
+---
+
+- C chapter 5~6
