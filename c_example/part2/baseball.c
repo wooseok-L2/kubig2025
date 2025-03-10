@@ -2,53 +2,58 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdbool.h>
-#define MAX 3
+
 
 int main(void){
 
-    int tag[MAX] = {0};
-    int num[MAX] = {0};
-    char res[MAX] = {0};
-    int s_count = 0;
-    int b_count = 0;
-    
-    srand((unsigned int)time(NULL));
-    for (int i = 0; i < MAX; i++){
-        tag[i] = rand() % 10;
-    }
+    int question[3];
+    int answer[3];
+    srand(time(NULL));
+
+    question[0] = rand() % 10;
+
+    do{
+        question[1] = rand() % 10;
+    } while (question[0] == question[1]);
+
+    do{
+        question[2] = rand() % 10;
+    } while (question[0] == question[2] || question[1] == question[2]);
+
+     printf("%d %d %d \n", question[0], question[1], question[2]);
+    int count = 0;
+
     while(true){
-
-        printf("Enter 3 num : ");
         
-        for (int i = 0; i < MAX; i++){
-            
-            scanf("%d", &num[i]);
+        // enter number
+        printf("Enter number : \n Each number should not be same \n ");
+        for (int i = 0; i < 3; i++){
+            scanf("%d", &answer[i]);
         }
-         
-        for (int i = 0; i < MAX; i++){
 
-            for (int j = 0; j < MAX; j++){
-
-                if (tag[i] == num[j]){
-                    
+        // compare
+        int strike = 0;
+        int ball = 0;
+        
+        for (int i = 0; i < 3; i++){
+            for (int j = 0; j < 3; j++){
+                if (question[i] == answer[j]){
                     if (i == j){
-
-                        *res[i] = "strike";
+                        strike++;
                     }
-                    else{
-                        *res[i] = "ball";
-                    }
-                }
-
-                if (*res[i] == "strike"){
-                    s_count++;
-                }
-                else if (*res[i] == "ball"){
-                    b_count++;
+                    else ball++;
                 }
             }
         }
-        printf("%d strike. %d ball \n", s_count, b_count);
+        
+        printf("Strike: %d, Ball: %d \n", strike, ball);
+        count++;
+
+        if (strike == 3){
+            printf("%d Strike Out! your are win!!! \n", strike);
+            break;
+        }
     }
-    
+    printf("you tried only %d times! \n", count);
+    return 0;
 }
