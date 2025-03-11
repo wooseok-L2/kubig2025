@@ -58,3 +58,13 @@
 //     gets(str);
 //     puts(str);
 // }
+
+int main(void){
+
+    char ch;
+    int res;
+    int cnt;
+
+    while(1)
+    
+}
