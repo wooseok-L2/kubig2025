@@ -62,9 +62,38 @@
 int main(void){
 
     char ch;
-    int res;
-    int cnt;
+    int res = 0;
+    int cnt = 0;
+    int sol = 0;
+    int ent = 0;
 
-    while(1)
+    printf("enter str \n");
+    while(1){
+        
+        
+        res = scanf("%c", &ch);
+        
+        if (res == -1){
+            
+            printf("length of long string is %d \n", sol-1);
+            break;
+        }
+        
+        printf("%c", ch);
+        
+        cnt++;
+        
+        if (ch == '\n'){
+            if (sol < cnt){
+                
+                sol = cnt;
+            }
+            getchar();
+            cnt = 0;
+        }
+        
+    }
+
+    return 0;
     
 }

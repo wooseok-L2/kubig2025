@@ -16,6 +16,7 @@ int main(void){
     printf("%p \n", &str4);
 
     str2[0] = 'H';
+    //str1[0] = 'H';  => compile error!!! str1 cannot change!
     printf("%s \n", str1);
 
 
