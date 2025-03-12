@@ -61,38 +61,34 @@
 
 int main(void){
 
+    int max = 0;
     char ch;
-    int res = 0;
-    int cnt = 0;
-    int sol = 0;
-    int ent = 0;
+    int len = 0;
 
     printf("enter str \n");
+    
     while(1){
         
+        ch = getchar();
+
+        len = 0;
         
-        res = scanf("%c", &ch);
+        if (ch == -1) break;
         
-        if (res == -1){
-            
-            printf("length of long string is %d \n", sol-1);
-            break;
+        while(ch != '\n'){
+
+            ch = getchar();
+            len++;
         }
-        
-        printf("%c", ch);
-        
-        cnt++;
-        
-        if (ch == '\n'){
-            if (sol < cnt){
-                
-                sol = cnt;
-            }
-            getchar();
-            cnt = 0;
+
+        printf("length is %d \n", len);
+
+        if (len > max){
+            max = len;
         }
-        
     }
+
+    printf("The longest word size is %d \n", max);
 
     return 0;
     

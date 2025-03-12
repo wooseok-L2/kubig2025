@@ -32,3 +32,17 @@
 ---
 
 - C chapter 
+
+---
+## 2025-03-11
+---
+
+- string
+
+---
+## 2025-03-12
+---
+
+- How to install Mysql
+- How to set Mysql at Terminal
+- How to access to Mysql
