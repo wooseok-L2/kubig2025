@@ -19,5 +19,6 @@ INSERT INTO book
 VALUES(9, '올림픽 이야기', '삼성당', 7500);
 INSERT INTO book
 VALUES(10, 'Olympic Champions', 'Pearson', 13000);
+use mydb;
 select * 
 from book;
