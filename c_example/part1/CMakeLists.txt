@@ -8,7 +8,7 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 
 # set(EXECUTABLES)
 
-file(GLOB EXECUTABLES "c_example/part1/*.c")
+file(GLOB EXECUTABLES "${CMAKE_CURRENT_LIST_DIR}/*.c")
 
 foreach(EXECUTABLE ${EXECUTABLES})
     get_filename_component(EXE_NAME ${EXECUTABLE} NAME_WE)

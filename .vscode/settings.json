@@ -1,7 +1,20 @@
 {
     "files.associations": {
-        "stdio.h": "c"
+        "*.py": "python",
+        "*.repos": "yaml",
+        "*.world": "xml",
+        "*.xacro": "xml",
+        "stdio.h": "c",
+        "random": "c",
+        "stdbool.h": "c",
+        "string": "c",
+        "mysql.h": "c",
+        "*.ipp": "c",
+        "*.tcc": "c",
+        "istream": "c"
     },
+
+    "ros.distro": "humble",
     "C_Cpp.errorSquiggles": "disabled",
     "cmake.sourceDirectory": "/home/lws/kulws2025/sqlQuery"
 }

@@ -46,3 +46,10 @@
 - How to install Mysql
 - How to set Mysql at Terminal
 - How to access to Mysql
+
+---
+## 2025-03-13
+---
+
+- Dynamic Allocation
+- How to use Mysql struct and functions 
