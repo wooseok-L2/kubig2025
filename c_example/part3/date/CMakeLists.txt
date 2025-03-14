@@ -7,4 +7,4 @@ set(SOURCES
     main.c
     date.c)
 
-add_executable(carSerial main.c date.c)
+add_executable(date main.c date.c)

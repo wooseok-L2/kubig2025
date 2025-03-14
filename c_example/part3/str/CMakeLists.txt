@@ -7,4 +7,4 @@ set(SOURCES
     main.c
     mystring.c)
 
-add_executable(carSerial main.c mystring.c)
+add_executable(str main.c mystring.c)

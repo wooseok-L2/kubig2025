@@ -15,7 +15,6 @@ foreach(EXECUTABLE ${EXECUTABLES})
     add_executable(${EXE_NAME} ${EXECUTABLE})
 endforeach()
 
-#add subdirectory
 add_subdirectory(carSerial)
 add_subdirectory(date)
 add_subdirectory(myRandom)

@@ -7,4 +7,4 @@ set(SOURCES
     main.c
     myRandom.c)
 
-add_executable(carSerial main.c myRandom.c)
+add_executable(myRandom main.c myRandom.c)

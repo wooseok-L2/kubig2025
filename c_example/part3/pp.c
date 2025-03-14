@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdin.h>
 
 // void input_nums(int *lotto_nums, int size);
 // void print_nums(int *lotto_nums, int size);
@@ -59,37 +60,48 @@
 //     puts(str);
 // }
 
+// int main(void){
+
+//     int max = 0;
+//     char ch;
+//     int len = 0;
+
+//     printf("enter str \n");
+    
+//     while(1){
+        
+//         ch = getchar();
+
+//         len = 0;
+        
+//         if (ch == -1) break;
+        
+//         while(ch != '\n'){
+
+//             ch = getchar();
+//             len++;
+//         }
+
+//         printf("length is %d \n", len);
+
+//         if (len > max){
+//             max = len;
+//         }
+//     }
+
+//     printf("The longest word size is %d \n", max);
+
+//     return 0;
+    
+// }
+
+#define MAX_LEN 16
 int main(void){
 
-    int max = 0;
-    char ch;
-    int len = 0;
+    char str[MAX_LEN];
 
-    printf("enter str \n");
+    printf("Enter word \n");
+    fgets(str, sizeof(str), stdin);
     
-    while(1){
-        
-        ch = getchar();
 
-        len = 0;
-        
-        if (ch == -1) break;
-        
-        while(ch != '\n'){
-
-            ch = getchar();
-            len++;
-        }
-
-        printf("length is %d \n", len);
-
-        if (len > max){
-            max = len;
-        }
-    }
-
-    printf("The longest word size is %d \n", max);
-
-    return 0;
-    
 }

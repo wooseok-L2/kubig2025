@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-/*int main(void){
+int main(void){
 
     int kor = 3;
     int eng = 5;
@@ -18,7 +18,7 @@
     printf("grade : %.1lf \n", grade);
     printf("res : %d \n", res);
 
-}*/
+}
 
 /*int main(void){
 
