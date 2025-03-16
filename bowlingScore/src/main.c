@@ -32,30 +32,28 @@ int main(void){
       printf("Spare! \n");
       spcount++;
       // res[i] += res[i-1];
-      continue;
     }
     else if(res[i] != 10){ 
       printf("great! \n");
       res[i] += res[i-1];
+      continue;
     }
 
-    if (stcount > 0){
+    if (stcount % 3 != 0 && stcount > 0){
       bonus += res[i];
-      res[i-1] += res[i];
       res[i-1] += bonus;
+      continue;
+    }
+    else{
+      res[i-1] += bonus;
+      res[i-2] += bonus;
       bonus = 0;
       stcount = 0;
       continue;
     }
-    else{
-      bonus += res[i];
-      res[i-1] += res[i];
-      res[i-1] += bonus;
-      bonus = 0;
-    }
 
-    if (spcount == 1){
-      bonus = score[i][j-1];
+    if (spcount > 1){
+      bonus = score[i][1];
       res[i-1] += bonus;
       res[i] += res[i-1];
       spcount = 0;
