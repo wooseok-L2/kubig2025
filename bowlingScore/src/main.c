@@ -15,49 +15,43 @@ int main(void){
     for (j = 1; j < 3; j++){
       printf("frame[i] \n");
       printf("넘어간 핀 갯수 입력: );
-      scanf("%d", &score[i][j]);             // 첫번째 공 넘어간 핀 갯수 입력
+      scanf("%d", &score[i][j]);             // 넘어간 핀 갯수 입력
       
-      if (res[i][j] == 10){                // 스트라이크
+      if (score[i][j] == 10){                  // 스트라이크
         printf("Strike!! \n");
         stcount++;
-        strike(score, stcount);
-      }               // 프레임에 넘어간 핀 갯수 입력
-      esls{
-        scanf("%d", &score[i][j]);}          // 두번째 공 넘어간 핀 갯수 입력
-  
-      if((x1 != 10) && ((x1 + x2) == 10)){          // 스페어
-        printf("Spare! \n");
-        res[i] = x1 + x2;           // 첫번째 두번째에 넘어간 핀 갯 수 입력
-        spcount++;
-      else{
-        res[i] = x1 + x2;
-  
-      x1 = 0;                       // 핀 갯수 초기화
-      x2 = 0;
+        res[i] = score[i][j];
+        break;
+      }                                      // 프레임에 넘어간 핀 갯수 입력
+    }
 
+    res[i] = score[i][j-1] + score[i][j];
 
+    if (res[i] == 10){
+      printf("Spare! \n");
+      spcount++;
+      res[i] += res[i-1];
+      continue;
+    }
+    else { 
+      printf("great! \n");
+      res[i] += res[i-1];
+    }
 
-int strike(int *res, stcount){
-    int bonus = 0;
-    if (stcount % 3 == 0){        // 스트라이크 0 or 3회
-        bonus = 0;}
-    esle if (stcount % 3 == 1){   // 스트라이크 1회 
-        bonus += res[i]; 
-    else if (stcount % 3 == 2){   // 스트라이크 2회
-        bonus += res[i];
-  
-    res[i-1] += bonus;  
-    res[i] = res[i-1];
-}  
+    if (stcount % 3 != 0){
+      bonus = res[i];
+      res[i-1] += bonus;
+      res[i] += res[i-1];
+    }
+    else { bonus = 0; }
 
-int spare(int *res, spcount){
-    int bonus = 0;
-    if(spcount == 1){
-      bonus = x1;
-  
-    res[i-1] += bonus;  
-    res[i] = res[i-1];
-} 
+    if (spcount == 1){
+      bonus = score[i][j-1];
+      res[i-1] += bonus;
+      res[i] += res[i-1];
+    }
+    
+}
 
 
 
