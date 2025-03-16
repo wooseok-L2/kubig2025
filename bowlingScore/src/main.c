@@ -1,69 +1,45 @@
 #include <stdio.h>
 
-int frame[11] = {0);
-int res[10] = {0};
-int x1, x2;
-int score[2][10] = {0};
-int bonus = 0;
-int stcount = 0;
-int spcount = 0;
+#define FRAMES 10
 
-int main(void){
-  int i;                      // 게임 시작
-  int j;
-  for (i = 1; i < 11; i++){ 
-    for (j = 1; j < 3; j++){
-      printf("frame[i] \n");
-      printf("넘어간 핀 갯수 입력: );
-      scanf("%d", &score[i][j]);             // 넘어간 핀 갯수 입력
-      
-      if (score[i][j] == 10){                  // 스트라이크
-        printf("Strike!! \n");
-        stcount++;
-        res[i] = score[i][j];
-        break;
-      }                                      // 프레임에 넘어간 핀 갯수 입력
-      else {
-        res[i] += score[i][j];
-      }
-    }
-    
-    if (res[i] == 10 && score[i][1] != 10){
-      printf("Spare! \n");
-      spcount++;
-      // res[i] += res[i-1];
-    }
-    else if(res[i] != 10){ 
-      printf("great! \n");
-      res[i] += res[i-1];
-      continue;
+int main() {
+    int rolls[21] = {0}; // 최대 21번의 투구 가능 (10 프레임 + 스트라이크 보너스)
+    int totalScore = 0;
+    int rollIndex = 0;
+
+    // 입력 받기
+    printf("볼링 점수 계산기\n");
+    for (int i = 0; i < FRAMES; i++) {
+        printf("프레임 %d 첫 번째 투구: ", i + 1);
+        scanf("%d", &rolls[rollIndex]);
+        if (rolls[rollIndex] == 10) { // 스트라이크
+            printf("스트라이크!\n");
+            rollIndex++;
+            continue; // 다음 프레임으로 이동
+        }
+
+        printf("프레임 %d 두 번째 투구: ", i + 1);
+        scanf("%d", &rolls[rollIndex + 1]);
+        rollIndex += 2;
     }
 
-    if (stcount % 3 != 0 && stcount > 0){
-      bonus += res[i];
-      res[i-1] += bonus;
-      continue;
-    }
-    else{
-      res[i-1] += bonus;
-      res[i-2] += bonus;
-      bonus = 0;
-      stcount = 0;
-      continue;
+    // 점수 계산
+    rollIndex = 0;
+    for (int i = 0; i < FRAMES; i++) {
+        if (rolls[rollIndex] == 10) { // 스트라이크
+            totalScore += 10 + rolls[rollIndex + 1] + rolls[rollIndex + 2];
+            rollIndex++;
+        } else if (rolls[rollIndex] + rolls[rollIndex + 1] == 10) { // 스페어
+            totalScore += 10 + rolls[rollIndex + 2];
+            rollIndex += 2;
+        } else { // 일반 프레임
+            totalScore += rolls[rollIndex] + rolls[rollIndex + 1];
+            rollIndex += 2;
+        }
     }
 
-    if (spcount > 1){
-      bonus = score[i][1];
-      res[i-1] += bonus;
-      res[i] += res[i-1];
-      spcount = 0;
-      bonus = 0;
-    }
-    
+    // 최종 점수 출력
+    printf("총 점수: %d\n", totalScore);
+
+    return 0;
 }
-
-
-
-
-
-
