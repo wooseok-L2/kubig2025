@@ -40,9 +40,9 @@ int main(void){
     }
 
     if (stcount > 0){
-      bonus = res[i];
+      bonus += res[i];
+      res[i-1] += res[i];
       res[i-1] += bonus;
-      res[i] += res[i-1];
       if (stcount == 3){
         stcount = 0;
       }
