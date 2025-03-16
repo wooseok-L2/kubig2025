@@ -49,6 +49,8 @@ int main(void){
       bonus = score[i][j-1];
       res[i-1] += bonus;
       res[i] += res[i-1];
+      spcount = 0;
+      bonus = 0;
     }
     
 }
