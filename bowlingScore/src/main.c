@@ -24,14 +24,14 @@ int main(void){
         break;
       }                                      // 프레임에 넘어간 핀 갯수 입력
       else {
-        res[i] = score[i][j];
+        res[i] += score[i][j];
       }
     }
     
     if (res[i] == 10 && score[i][1] != 10){
       printf("Spare! \n");
       spcount++;
-      res[i] += res[i-1];
+      // res[i] += res[i-1];
       continue;
     }
     else if(res[i] != 10){ 
@@ -43,10 +43,15 @@ int main(void){
       bonus += res[i];
       res[i-1] += res[i];
       res[i-1] += bonus;
-      if (stcount == 3){
-        stcount = 0;
-      }
+      bonus = 0;
+      stcount = 0;
       continue;
+    }
+    else{
+      bonus += res[i];
+      res[i-1] += res[i];
+      res[i-1] += bonus;
+      bonus = 0;
     }
 
     if (spcount == 1){
