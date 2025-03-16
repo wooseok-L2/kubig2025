@@ -23,27 +23,31 @@ int main(void){
         res[i] = score[i][j];
         break;
       }                                      // 프레임에 넘어간 핀 갯수 입력
+      else {
+        res[i] = score[i][j];
+      }
     }
-
-    res[i] = score[i][j-1] + score[i][j];
-
-    if (res[i] == 10){
+    
+    if (res[i] == 10 && score[i][1] != 10){
       printf("Spare! \n");
       spcount++;
       res[i] += res[i-1];
       continue;
     }
-    else { 
+    else if(res[i] != 10){ 
       printf("great! \n");
       res[i] += res[i-1];
     }
 
-    if (stcount % 3 != 0){
+    if (stcount > 0){
       bonus = res[i];
       res[i-1] += bonus;
       res[i] += res[i-1];
+      if (stcount == 3){
+        stcount = 0;
+      }
+      continue;
     }
-    else { bonus = 0; }
 
     if (spcount == 1){
       bonus = score[i][j-1];
