@@ -27,15 +27,22 @@ int main(void)
         switch (choice){
         case START:
             gamestart();
-            add_score(conn);                
+            printf("next level \n");
+            add_score(conn);  
+            waitEnter();              
             break;
         case SCORE:
             checkscore(conn);
+            waitEnter();
             break;
         case HISTORY:
             checkHistory(conn);
+            waitEnter();
             break;
         }
+
+        printf("If you want to exit, press enter! \n");
+
     }
 
     mysql_close(conn);

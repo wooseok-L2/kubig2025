@@ -1,36 +1,63 @@
 #include "bbowling.h"
+#define FRAMES 10
 
 Bowling newgame;
+
 
 void printf_menu(void){
     system("clear");
     printf("=====Welcome to bowling game===== \n");
-    printf("1. Game Start \n");
-    printf("2. Check Score \n");
-    printf("3. Check History \n");
+    printf("0. Game Start \n");
+    printf("1. Check Score \n");
+    printf("2. Check History \n");
 }
 
-int gamestart(void) {
+void gamestart(void) {
     int rolls[21] = {0}; // 최대 21번의 투구 가능 (10 프레임 + 스트라이크 보너스)
     int totalScore = 0;
     int rollIndex = 0;
 
     // 입력 받기
     printf("볼링 점수 계산기\n");
+    
+    playerRegister();
+
     for (int i = 0; i < FRAMES; i++) {
         printf("프레임 %d 첫 번째 투구: ", i + 1);
         scanf("%d", &rolls[rollIndex]);
+
         if (rolls[rollIndex] == 10) { // 스트라이크
             printf("스트라이크!\n");
             rollIndex++;
+            if (i == 9){
+                printf("one more time! \n");
+                scanf("%d", &rolls[rollIndex]);
+                if (rolls[rollIndex] == 10){
+                    printf("스트라이크!\n");
+                    printf("last time! \n");
+                    rollIndex++;
+                    scanf("%d", &rolls[rollIndex]);
+                }else{
+                    printf("last time! \n");
+                    scanf("%d", &rolls[rollIndex + 1]);
+                }
+            }
             continue; // 다음 프레임으로 이동
         }
 
         printf("프레임 %d 두 번째 투구: ", i + 1);
         scanf("%d", &rolls[rollIndex + 1]);
         rollIndex += 2;
+        if (i == 9){
+            if (rolls[rollIndex-2] + rolls[rollIndex-1] == 10){
+                printf("spare! \n");
+                printf("last time! \n");
+                scanf("%d", &rolls[rollIndex]);
+            }
+        }
     }
-
+    // frame 10 bonus
+  
     // 점수 계산
     rollIndex = 0;
     for (int i = 0; i < FRAMES; i++) {
@@ -51,11 +78,10 @@ int gamestart(void) {
 
     newgame.score = totalScore;
 
-    playerRegister();
 
     //add_score(conn);
+    waitEnter();
 
-    return 0;
 }
 
 
@@ -71,14 +97,16 @@ void add_score(MYSQL *conn){
 
     char query[255];
 
-    sprintf(query, "insert into SRecord vlaues ('%s', STR_TO_DATE(\''%s'\', \'%%Y- %%m-%%d\'), %d)", newgame.username, newgame.playdate, newgame.score);
+    sprintf(query, "insert into SRecord vlaues ('%s', STR_TO_DATE('%s', '%%y-%%m-%%d'), %d)", newgame.username, newgame.playdate, newgame.score);
 
     if (mysql_query(conn, query)){
         printf("Fail add data : %s \n", mysql_error(conn));
     }
     else{
-        printf("Success \n");
+        printf("Success Insert data! \n");
     }
+
+    waitEnter();
 
 }
 
@@ -128,8 +156,6 @@ void checkscore(MYSQL *conn){
 
     free(pbowling);
 
-    waitEnter();
-
 }
 
 void checkHistory(MYSQL *conn){
@@ -169,7 +195,7 @@ void checkHistory(MYSQL *conn){
 
     int i = 0;
     
-    while (row = mysql_fetch_row(res)){
+    while (row = mysql_fetch_row(res)){        waitEnter();
         strcpy((pbowling + i)->username, row[0]);
         strcpy((pbowling + i)->playmonth, row[1]);
         (pbowling + i)->numgames, atoi(row[2]);
@@ -186,8 +212,6 @@ void checkHistory(MYSQL *conn){
 
 
     free(pbowling);
-
-    waitEnter();
 
 }
 

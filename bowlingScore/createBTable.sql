@@ -1,6 +1,5 @@
-create database bowling;
-grant all privileges on bowling.* to myuser @'%';
-use bowling;
+
+use mydb;
 
 create table SRecord (
     username varchar(20) primary key,
@@ -13,3 +12,5 @@ create table TRecord (
     playmonth date,
     numgames integer
 );
+
+
