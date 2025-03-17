@@ -1,4 +1,4 @@
-#include "bowling.h"
+#include "bbowling.h"
 
 
 int main(void)
@@ -25,16 +25,16 @@ int main(void)
         printf_menu();
         scanf("%d%*c", &choice);
         switch (choice){
-            case START:
-                gamestart();
-                add_score(conn);
-                break;
-            case SCORE:
-                checkscore(conn);
-                break;
-            case HISTORY:
-                checkHistory(conn);
-                break;
+        case START:
+            gamestart();
+            add_score(conn);                
+            break;
+        case SCORE:
+            checkscore(conn);
+            break;
+        case HISTORY:
+            checkHistory(conn);
+            break;
         }
     }
 

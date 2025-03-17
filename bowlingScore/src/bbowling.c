@@ -1,6 +1,14 @@
-#include "bowling.h"
+#include "bbowling.h"
 
 Bowling newgame;
+
+void printf_menu(void){
+    system("clear");
+    printf("=====Welcome to bowling game===== \n");
+    printf("1. Game Start \n");
+    printf("2. Check Score \n");
+    printf("3. Check History \n");
+}
 
 int gamestart(void) {
     int rolls[21] = {0}; // 최대 21번의 투구 가능 (10 프레임 + 스트라이크 보너스)
@@ -50,13 +58,6 @@ int gamestart(void) {
     return 0;
 }
 
-void printf_menu(void){
-    system("clear");
-    printf("=====Welcome to bowling game===== \n");
-    printf("1. Game Start \n");
-    printf("2. Check Score \n");
-    printf("3. Check History \n");
-}
 
 void playerRegister(void){
     printf("Enter your name: ");
