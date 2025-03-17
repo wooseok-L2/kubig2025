@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
-#include <stdin.h>
+//#include <stdin.h>
 
 // void input_nums(int *lotto_nums, int size);
 // void print_nums(int *lotto_nums, int size);

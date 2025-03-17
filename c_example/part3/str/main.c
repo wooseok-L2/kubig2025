@@ -1,5 +1,6 @@
 #include "string.h"
 
+
 int main(void){
 
     char *str = "wonderful C class";

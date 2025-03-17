@@ -1,6 +1,6 @@
-create database mydb;
-grant all privileges on mydb.* to myuser @'%';
-use mydb;
+create database bowling;
+grant all privileges on bowling.* to myuser @'%';
+use bowling;
 
 create table SRecord (
     username varchar(20) primary key,
