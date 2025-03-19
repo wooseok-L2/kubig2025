@@ -1,57 +1,35 @@
 
 #include <avr/io.h>
 #include <util/delay.h>
+#include <avr/interrupt.h>
 
-int count_TR(uint8_t flag);
+volatile unit8_t shiftFlag = 1;
 
 int main()
 {
-    uint8_t numbers[] = {0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x27, 0x7F, 0x67};
-    int count = 0;
-    uint8_t switch_flag = 0;
+    uint8_t ledData = 0x01;
 
-    DDRA = 0xFF;
-    DDRE = 0x00;
+    DDRC = 0x0f;
+    EIMSK = 0xa0;     //0b10100000   int 5,  int 7
+    EICRB = 0xc8;     // interrupt 5 is down, 7 is up
+    EIFR = 0xa0;      // flag clear
+    sei();
 
-    while (1)
-    {
-        switch_flag = PINE >> 4;
-
-        // 스위치가 눌릴 때 까지 대기
-        while (PINE >> 4 != 0x00)
-            ;
-
-        if (switch_flag != 0)
-            count += count_TR(switch_flag);
-        if (count < 0)
-            count = 0;
-        else if (count > 10)
-            count = 10;
-
-        PORTA = numbers[count];
-        _delay_ms(100);
+    while(1){
+        PORTC
     }
 
     return 0;
 }
 
-int count_TR(uint8_t flag)
-{
-    int count = 0;
-    switch (flag)
-    {
-    case 0x01:
-        count = 1;
-        break;
-    case 0x02:
-        count = 2;
-        break;
-    case 0x04:
-        count = -1;
-        break;
-    case 0x08:
-        count = -2;
-        break;
-    }
-    return count;
+ISR(INT5_vect){
+    cli();
+    shiftFlag = 1;
+    sei();
+}
+
+ISR(INT7_vect){
+    cli();
+    shiftFlag = 2;
+    sei();
 }
