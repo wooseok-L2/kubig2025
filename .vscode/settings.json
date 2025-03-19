@@ -11,7 +11,9 @@
         "mysql.h": "c",
         "*.ipp": "c",
         "*.tcc": "c",
-        "istream": "c"
+        "istream": "c",
+        "io.h": "c",
+        "delay.h": "c"
     },
 
     "ros.distro": "humble",

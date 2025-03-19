@@ -14,3 +14,6 @@ create table TRecord (
 );
 
 
+use mydb;
+select *
+frmo SRecord;

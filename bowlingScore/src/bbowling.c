@@ -97,7 +97,7 @@ void add_score(MYSQL *conn){
 
     char query[255];
 
-    sprintf(query, "insert into SRecord vlaues ('%s', STR_TO_DATE('%s', '%%y-%%m-%%d'), %d)", newgame.username, newgame.playdate, newgame.score);
+    sprintf(query, "insert into SRecord(username, playdate, score) values ('%s', '%s', %d);", newgame.username, newgame.playdate, newgame.score);
 
     if (mysql_query(conn, query)){
         printf("Fail add data : %s \n", mysql_error(conn));
@@ -116,7 +116,7 @@ void checkscore(MYSQL *conn){
     MYSQL_RES *res;
     MYSQL_ROW row;
     char query[255];
-    strcpy(query, "select * from SRecord");
+    strcpy(query, "select * from SRecord;");
 
     if (mysql_query(conn, query)){
         printf("Fail query \n");
@@ -165,23 +165,30 @@ void checkHistory(MYSQL *conn){
     MYSQL_RES *res;
     MYSQL_ROW row;
     char query[255];
-    strcpy(query, "insert into TRecord(username, playmonth, numgames) select username, DATE_FORMAT(playdate, \'%%Y-%%m\') as Monthly, count(*) from SRecord group by username, Monthly order by username, Monthly desc");
 
+
+    strcpy(query, "INSERT INTO TRecord (username, playmonth, numgames)"
+        "SELECT username, MONTH(playdate), COUNT(*) "
+        "FROM SRecord;"
+        "GROUP BY username, month(playdate)");
+    
+    //printf("Executing query: %s\n", query);
     if (mysql_query(conn, query)){
-        printf("Fail query \n");
+        printf("Fail query : %s \n", mysql_error(conn));
         return;
     }
 
-    strcpy(query, "select * from TRecord");
+    strcpy(query, "select username,  from TRecord;");
 
     if (mysql_query(conn, query)){
-        printf("Fail query \n");
+        printf("Fail query : %s \n", mysql_error(conn));
         return;
     }
+
 
     res = mysql_store_result(conn);
 
-    if (!res){
+    if (res == NULL){
         printf("Fail read \n");
         return;
     }
@@ -195,7 +202,7 @@ void checkHistory(MYSQL *conn){
 
     int i = 0;
     
-    while (row = mysql_fetch_row(res)){        waitEnter();
+    while (row = mysql_fetch_row(res)){        
         strcpy((pbowling + i)->username, row[0]);
         strcpy((pbowling + i)->playmonth, row[1]);
         (pbowling + i)->numgames, atoi(row[2]);
