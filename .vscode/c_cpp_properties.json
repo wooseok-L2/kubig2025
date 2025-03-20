@@ -9,6 +9,7 @@
             "name": "PlatformIO",
             "includePath": [
                 "/home/lws/kulws2025/src",
+                "/home/lws/kulws2025/lib/uart0",
                 "/home/lws/kulws2025/lib/lcd",
                 "/home/lws/kulws2025/lib/uart1",
                 ""
@@ -17,6 +18,7 @@
                 "limitSymbolsToIncludedHeaders": true,
                 "path": [
                     "/home/lws/kulws2025/src",
+                    "/home/lws/kulws2025/lib/uart0",
                     "/home/lws/kulws2025/lib/lcd",
                     "/home/lws/kulws2025/lib/uart1",
                     ""

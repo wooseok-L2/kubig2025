@@ -7,7 +7,6 @@
 #include <util/delay.h>
 
 volatile uint16_t adcResult = 0;
-volatile uint8_t intData = '0';
 
 int main()
 {
@@ -17,47 +16,22 @@ int main()
     stdin = &INPUT;
     stdout = &OUTPUT;
 
-    DDRC = 0x0F;
-
-  
     ADMUX = 0x40;   // ADC0 single mode, 0번 채널, 3.3V 외부 기준 전압(AREF)
     ADCSRA = 0xAF;  // 10101111 ADC 허가, free running mode, Intterrupt en, 128 분주비
     ADCSRA |= 0x40; // ADC 개시
     sei();          // 전역 인터럽트 허용
-
     printf("Hi, I'm Atmega128");
 
     lcdGotoXY(0, 0);
     lcdPrintData("Light Sensor", 12);
     char buf[16];
-    uint8_t onTime, offTime;
-
     while (1)
     {
         lcdGotoXY(0, 1);
         sprintf(buf, "L: %u", adcResult);
         lcdPrintData(buf, strlen(buf));
         printf("CDS ADC_data : %u \r\n", adcResult);
-
-        onTime = (adcResult - 100) / 35;
-        if (onTime < 0){
-            onTime = 0;
-        }
-        if (onTime > 20){
-            onTime = 20;
-        }
-        offTime = 20 - onTime;
-        PORTC = 0x0F;
-        for (int i = 0; i < onTime; i++){
-
-            _delay_ms(100);
-        }
-        PORTC = 0x00;
-        for (int i = 0; i < offTime; i++){
-
-            _delay_ms(100);
-        }
-
+        _delay_ms(200);
     }
     return 0;
 }

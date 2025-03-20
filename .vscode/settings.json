@@ -14,7 +14,9 @@
         "istream": "c",
         "io.h": "c",
         "delay.h": "c",
-        "interrupt.h": "c"
+        "interrupt.h": "c",
+        "uart0.h": "c",
+        "lcd.h": "c"
     },
 
     "ros.distro": "humble",
