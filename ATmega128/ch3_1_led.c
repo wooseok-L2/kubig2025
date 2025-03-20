@@ -13,7 +13,7 @@ int main(){
 
         while(1){
 
-            if(led_data >= 0x0f){
+            if(led_data > 0x04){
                 direction = 0;
             }
 
