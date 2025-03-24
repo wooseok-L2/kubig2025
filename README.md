@@ -52,4 +52,13 @@
 ---
 
 - Dynamic Allocation
-- How to use Mysql struct and functions 
+- How to use Mysql struct and functions
+
+---
+## 2025-03-17 
+---
+- 볼링 과제 제출
+
+---
+## 2025-03-18
+---
