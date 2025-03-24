@@ -10,8 +10,10 @@
             "includePath": [
                 "/home/lws/kulws2025/src",
                 "/home/lws/kulws2025/lib/lcd",
+                "/home/lws/kulws2025/lib/at25",
+                "/home/lws/kulws2025/lib/avr-uart",
+                "/home/lws/kulws2025/lib/sht20",
                 "/home/lws/kulws2025/lib/uart0",
-                "/home/lws/kulws2025/lib/uart1",
                 ""
             ],
             "browse": {
@@ -19,8 +21,10 @@
                 "path": [
                     "/home/lws/kulws2025/src",
                     "/home/lws/kulws2025/lib/lcd",
+                    "/home/lws/kulws2025/lib/at25",
+                    "/home/lws/kulws2025/lib/avr-uart",
+                    "/home/lws/kulws2025/lib/sht20",
                     "/home/lws/kulws2025/lib/uart0",
-                    "/home/lws/kulws2025/lib/uart1",
                     ""
                 ]
             },

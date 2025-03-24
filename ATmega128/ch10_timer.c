@@ -1,6 +1,6 @@
 // timer2 번을 써서 LED 좌우로 움직이는 코드 작성. 0.3초마다 움직이기.
 
-#incl#include "lcd.h"
+#include "lcd.h"
 #include <avr/io.h>
 #include <stdio.h>
 #include <util/delay.h>
