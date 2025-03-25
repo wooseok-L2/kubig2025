@@ -1,174 +1,147 @@
-#ifndef SHT2x_H
-#define SHT2x_H
-//==============================================================================
-//    S E N S I R I O N   AG,  Laubisruetistr. 50, CH-8712 Staefa, Switzerland
-//==============================================================================
-// Project   :  SHT2x Sample Code (V1.2)
-// File      :  SHT2x.h
-// Author    :  MST
-// Controller:  AVR
-// Compiler  :  AvrStudio
-// Brief     :  Sensor layer. Definitions of commands and registers,
-//              functions for sensor access
-//==============================================================================
-//---------- Includes ----------------------------------------------------------
+/*********** AVR155 : Accessing I2C LCD display using the AVR TWI ***********
+
+Device      : 	ATmega163
+
+File name   : 	TWI_driver.c
+
+Ver nr.     : 	1.0
+
+Description : 	TWI_driver.c is a driver to ease the approach to AVRs TWI
+                module. It requires a package containing slave adresse,
+                number of bytes to handle and a pointer. The pointer tells
+                where to find the bytes to send and where the temp buffer for
+                bytes to receive are located. Dependent on a succesfull
+                communication or not it will return SUCCESS if no problems or
+                the AVR TWSR if error occured. The driver will handle all
+                signaling and handeling of START/STOP and bus error.
+
+                Se appnote for more documentation on the drivers input
+                and output.
+
+Author      : 	Asmund Saetre
+
+Change log  : 	Created 12.05.2000
+
+****************************************************************************/
 #include "TWI_driver.h"
 
-//---------- Defines -----------------------------------------------------------
-typedef union
+/****************************************************************************
+    Function : char Init_TWI(void)
+    Setup the TWI module
+    Baudrate 	: 100kHz @ 4MHz system clock
+    Own address : OWN_ADR (Defined in TWI_driver.h)
+****************************************************************************/
+
+void Init_TWI(void)
 {
-    uint16_t u16; // element specifier for accessing whole u16
-    int16_t i16;  // element specifier for accessing whole i16
-    struct
-    {
-        uint8_t u8L; // element specifier for accessing low u8
-        uint8_t u8H; // element specifier for accessing high u8
-    } s16;           // element spec. for acc. struct with low or high u8
-} nt16;
+    //	TWAR = 0x61;							//Set own slave address
+    TWBR = 65;          // Set baud-rate to 100.997 KHz at
+                        // 14.7456 MHz xtal
+    TWCR = (1 << TWEN); // Enable TWI-interface
+}
 
-//---------- Enumerations ------------------------------------------------------
-// Error codes
-typedef enum
+/****************************************************************************
+    Function : void Wait_TWI_int(void)
+    Loop until TWI interrupt flag is set
+****************************************************************************/
+void Wait_TWI_int(void)
 {
-    ACK_ERROR = 0x01,
-    TIME_OUT_ERROR = 0x02,
-    CHECKSUM_ERROR = 0x04,
-    UNIT_ERROR = 0x08,
-    LOW_BAT_ERROR = 0x10
-} etError;
+    while (!(TWCR & (1 << TWINT)))
+        ;
+}
 
-// sensor command
-typedef enum
+/****************************************************************************
+    Function :unsigned char	Send_start(void)
+    Send a START condition to the bus and wait for the TWINT get set set to
+    see the result. If it failed return the TWSR value, if succes return
+    SUCCESS.
+****************************************************************************/
+unsigned char Send_start(void)
 {
-    TRIG_T_MEASUREMENT_HM = 0xE3,    // command trig. temp meas. hold master
-    TRIG_RH_MEASUREMENT_HM = 0xE5,   // command trig. humidity meas. hold master
-    TRIG_T_MEASUREMENT_POLL = 0xF3,  // command trig. temp meas. no hold master
-    TRIG_RH_MEASUREMENT_POLL = 0xF5, // command trig. humidity meas. no hold master
-    USER_REG_W = 0xE6,               // command writing user register
-    USER_REG_R = 0xE7,               // command reading user register
-    SOFT_RESET = 0xFE                // command soft reset
-} etSHT2xCommand;
+    TWCR = ((1 << TWINT) + (1 << TWSTA) + (1 << TWEN)); // Send START
 
-typedef enum
+    Wait_TWI_int(); // Wait for TWI interrupt flag set
+
+    if ((TWSR != START) && (TWSR != REP_START)) // If status other than START
+        return TWSR;                            // transmitted(0x08) or Repeated
+    return SUCCESS;                             // START transmitted(0x10)
+                                                //-> error  and return TWSR.
+                                                // If success return	SUCCESS
+}
+
+/****************************************************************************
+    Function :
+    Send a STOP condition to the bus
+****************************************************************************/
+void Send_stop(void)
 {
-    SHT2x_RES_12_14BIT = 0x00, // RH=12bit, T=14bit
-    SHT2x_RES_8_12BIT = 0x01,  // RH= 8bit, T=12bit
-    SHT2x_RES_10_13BIT = 0x80, // RH=10bit, T=13bit
-    SHT2x_RES_11_11BIT = 0x81, // RH=11bit, T=11bit
-    SHT2x_RES_MASK = 0x81      // Mask for res. bits (7,0) in user reg.
-} etSHT2xResolution;
+    TWCR = ((1 << TWEN) + (1 << TWINT) + (1 << TWSTO)); // Send STOP condition
+}
 
-typedef enum
+/****************************************************************************
+    Function : unsigned char Send_byte(unsigned char data)
+    Send one byte to the bus.
+****************************************************************************/
+unsigned char Send_byte(unsigned char data)
 {
-    SHT2x_EOB_ON = 0x40,   // end of battery
-    SHT2x_EOB_MASK = 0x40, // Mask for EOB bit(6) in user reg.
-} etSHT2xEob;
+    Wait_TWI_int(); // Wait for TWI interrupt flag set
 
-typedef enum
+    TWDR = data;
+    TWCR = ((1 << TWINT) + (1 << TWEN)); // Clear int flag to send byte
+
+    Wait_TWI_int(); // Wait for TWI interrupt flag set
+
+    if (TWSR != MTX_DATA_ACK) // If NACK received return TWSR
+        return TWSR;
+    return SUCCESS; // Else return SUCCESS
+}
+
+/****************************************************************************
+    Function : unsigned char Send_adr(unsigned char adr)
+    Send a SLA+W/R to the bus
+****************************************************************************/
+unsigned char Send_adr(unsigned char adr)
 {
-    SHT2x_HEATER_ON = 0x04,   // heater on
-    SHT2x_HEATER_OFF = 0x00,  // heater off
-    SHT2x_HEATER_MASK = 0x04, // Mask for Heater bit(2) in user reg.
-} etSHT2xHeater;
+    Wait_TWI_int(); // Wait for TWI interrupt flag set
 
-// measurement signal selection
-typedef enum
+    TWDR = adr;
+    TWCR = ((1 << TWINT) + (1 << TWEN)); // Clear int flag to send byte
+
+    Wait_TWI_int(); // Wait for TWI interrupt flag set
+
+    if ((TWSR != MTX_ADR_ACK) && (TWSR != MRX_ADR_ACK)) // If NACK received return
+                                                        // TWSR
+        return TWSR;
+    return SUCCESS; // Else return SUCCESS
+}
+
+/****************************************************************************
+    Function : unsigned char Get_byte(unsigned char *rx_ptr,char last_byte)
+    Wait for TWINT to receive one byte from the slave and send ACK. If this
+    is the last byte the master will send NACK to tell the slave that it
+    shall stop transmitting.
+****************************************************************************/
+unsigned char Get_byte(unsigned char *rx_ptr, char last_byte)
 {
-    HUMIDITY,
-    TEMP
-} etSHT2xMeasureType;
+    Wait_TWI_int(); // Wait for TWI interrupt flag set
 
-typedef enum
-{
-    I2C_ADR_W = 128, // sensor I2C address + write bit
-    I2C_ADR_R = 129  // sensor I2C address + read bit
-} etI2cHeader;
+    /*When receiving the last byte from the slave it will be sent a NACK to
+    make the slave stop transmitting, all bits before the last will get
+    a ACK*/
+    if (last_byte) // Last byte
+        /*Clear int flag to and do not enable acknowledge to tell the slave
+        to stop transmitting*/
+        TWCR = ((1 << TWINT) + (1 << TWEN));
+    else // Not the last byte
+        // Clear int flag and enable acknowledge to receive data.
+        TWCR = ((1 << TWINT) + (1 << TWEA) + (1 << TWEN));
+    Wait_TWI_int(); // Wait for TWI interrupt flag set
 
-//==============================================================================
-uint8_t SHT2x_CheckCrc(uint8_t *data, uint8_t nbrOfBytes, uint8_t checksum);
-//==============================================================================
-// calculates checksum for n bytes of data and compares it with expected
-// checksum
-// input:  data[]       checksum is built based on this data
-//         nbrOfBytes   checksum is built for n bytes of data
-//         checksum     expected checksum
-// return: error:       CHECKSUM_ERROR = checksum does not match
-//                      0              = checksum matches
+    *rx_ptr = TWDR; // Save received byte
 
-//==============================================================================
-uint8_t SHT2x_ReadUserRegister(uint8_t *pRegisterValue);
-//==============================================================================
-// reads the SHT2x user register (8bit)
-// input : -
-// output: *pRegisterValue
-// return: error
-
-//==============================================================================
-uint8_t SHT2x_WriteUserRegister(uint8_t *pRegisterValue);
-//==============================================================================
-// writes the SHT2x user register (8bit)
-// input : *pRegisterValue
-// output: -
-// return: error
-
-//==============================================================================
-uint8_t SHT2x_MeasurePoll(etSHT2xMeasureType eSHT2xMeasureType, nt16 *pMeasurand);
-//==============================================================================
-// measures humidity or temperature. This function polls every 10ms until
-// measurement is ready.
-// input:  eSHT2xMeasureType
-// output: *pMeasurand:  humidity / temperature as raw value
-// return: error
-// note:   timing for timeout may be changed
-
-//==============================================================================
-uint8_t SHT2x_MeasureHM(etSHT2xMeasureType eSHT2xMeasureType, nt16 *pMeasurand);
-//==============================================================================
-// measures humidity or temperature. This function waits for a hold master until
-// measurement is ready or a timeout occurred.
-// input:  eSHT2xMeasureType
-// output: *pMeasurand:  humidity / temperature as raw value
-// return: error
-// note:   timing for timeout may be changed
-
-//==============================================================================
-uint8_t SHT2x_SoftReset();
-//==============================================================================
-// performs a reset
-// input:  -
-// output: -
-// return: error
-
-//==============================================================================
-float SHT2x_CalcRH(uint16_t u16sRH);
-//==============================================================================
-// calculates the relative humidity
-// input:  sRH: humidity raw value (16bit scaled)
-// return: pHumidity relative humidity [%RH]
-
-//==============================================================================
-float SHT2x_CalcTemperatureC(uint16_t u16sT);
-//==============================================================================
-// calculates temperature
-// input:  sT: temperature raw value (16bit scaled)
-// return: temperature [�C]
-
-//==============================================================================
-uint8_t SHT2x_GetSerialNumber(uint8_t *u8SerialNumber);
-//==============================================================================
-// gets serial number of SHT2x according application note "How To
-// Read-Out the Serial Number"
-// note:   readout of this function is not CRC checked
-//
-// input:  -
-// output: u8SerialNumber: Array of 8 bytes (64Bits)
-//         MSB                                         LSB
-//         u8SerialNumber[7]             u8SerialNumber[0]
-//         SNA_1 SNA_0 SNB_3 SNB_2 SNB_1 SNB_0 SNC_1 SNC_0
-// return: error
-
-//==============================================================================
-uint8_t SHT2x_Init(void);
-//==============================================================================
-// initialize SHT2x
-#endif
+    /*If ACK has been transmitted or this was the last byte and NACK has been
+    sent -> return SUCCESS, else return TWSR*/
+    if (((TWSR == MRX_DATA_NACK) && (last_byte == FALSE)) || (TWSR == MRX_DATA_ACK))
+        return SUCCESS;
+    return TWSR;
+}

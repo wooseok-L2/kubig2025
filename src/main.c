@@ -1,50 +1,80 @@
+// SHT 5초 마다 한번씩 온습도 측정 - timer0 5초 주기를 계산.
+// 외부 EEPROM  의 주소는 0100-> 온도 0200-> 습도
+// SHT 에서 측정 실패는 error 성공 시에만 EEPROM 에 저장.
+// INT4 번 써서(스위치를 누르면) EEPROM 에 데이터를 읽어서 UART로 출력하기.
+// 0 ~ 99.9 표현하려면 1 byte 로는 부족하다. ???
+
+#include "SHT2x.h"
 #include "at25160.h"
-#include "lcd.h"
-#include <avr/delay.h>
+#include "uart0.h"
+#include <avr/interrupt.h>
 #include <avr/io.h>
 
-#define ARRAY_SIZE(array) (sizeof(array) / sizeof(array[0]))
-
-uint8_t msg1[] = "welcome!!";
-uint8_t msg2[] = "Atmega128-World!!";
-uint8_t msg3[] = "SPI-Flash Example";
+volatile uint8_t readFlag = 1, txFlag = 0;
+uint16_t timerCount = 0;
+uint16_t temperatureC, humidityRH;
 
 int main(void)
 {
-    uint8_t i = 0;
-    uint8_t buf1[20] = {0};
-    uint8_t buf2[20] = {0};
-    uint8_t buf3[20] = {0};
+    SPI_Init();
 
-    SPI_Init(); // PB0 1 2 3
-    lcdInit();  // PC4 5 6 7 PG2
+    Init_TWI();
+    SHT2x_Init();
 
+    uart0Init();
+    DDRE = _BV(PE1); // 0x02;
 
-    at25160_Read_Arry(0x0100, buf1, ARRAY_SIZE(buf1));
-    at25160_Read_Arry(0x0200, buf2, ARRAY_SIZE(buf2));
-    at25160_Read_Arry(0x0300, buf3, ARRAY_SIZE(buf3));
+    // interrupt 4 설정
+    EICRB = 0x03; // int 4 상승 엣지
+    EIMSK = 0x10;
+
+    TCCR0 = 0x07; // 1024 분주비
+    TCNT0 = 112;  // 144 세기.. 16M /1024/ 0.1초 ....
+    TIMSK = 0x01; // timer0 ovf enable
+
+    sei();
+    stdout = &OUTPUT;
 
     while (1)
     {
-        lcdGotoXY(0, 0);
-        for (i = 0; i < 10 - 1; i++)
+        if (readFlag)
         {
-            lcdDataWrite(buf1[i]);
-            _delay_ms(100);
+            // i2c temp read -> spi eeprom write
+            SHT2x_MeasureHM(TEMP, (nt16 *)&temperatureC);
+            SHT2x_MeasureHM(HUMIDITY, (nt16 *)&humidityRH);
+            temperatureC = SHT2x_CalcTemperatureC(temperatureC) * 10;
+            humidityRH = SHT2x_CalcRH(humidityRH) * 10;
+            at25160_Write_Arry(0x0100, (uint8_t *)&temperatureC, 2);
+            at25160_Write_Arry(0x0200, (uint8_t *)&humidityRH, 2);
+            readFlag = 0;
         }
-        i = 0;
-        lcdGotoXY(0, 1);
-        while (buf2[i])
+        if (txFlag)
         {
-            lcdDataWrite(buf2[i]);
-            ++i;
-            _delay_ms(100);
+            // eeprom read -> uart printf();
+            at25160_Read_Arry(0x0100, (uint8_t *)&temperatureC, 2);
+            at25160_Read_Arry(0x0200, (uint8_t *)&humidityRH, 2);
+            uart0PrintString("\n\rTemp: ");
+            printf("%u.%u", temperatureC / 10, temperatureC % 10);
+            uart0PrintString("\n\rHumi: ");
+            printf("%u.%u", humidityRH / 10, humidityRH % 10);
+            txFlag = 0;
         }
-        lcdGotoXY(0, 0);
-        lcdPrint(buf3);
-        _delay_ms(2000);
-        lcdClear();
     }
-
     return 0;
+}
+
+ISR(TIMER0_OVF_vect)
+{
+    timerCount++;
+    if (timerCount >= 500) // 5초 확인
+    {
+        timerCount = 0;
+        readFlag = 1;
+    }
+    TCNT0 = 112;
+}
+
+ISR(INT4_vect)
+{
+    txFlag = 1;
 }
