@@ -1,13 +1,12 @@
-#ifndef BOWLINGSQL_H
-#define BOWLINGSQL_H
+#ifndef PJSQL_H
+#define PJSQL_H
 
 #include <mysql/mysql.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <pthread.h>
-#include <libserialport.h>
+
 
 // MySQL 연결 정보
 typedef struct
@@ -20,12 +19,6 @@ typedef struct
     int port;
 } MySQLConnection;
 
-// 데이터 송수신 및 DB 작업에 필요한 구조체 정의
-typedef struct {
-    struct sp_port *port;
-    MYSQL *conn;
-} ThreadData;
-
 
 // MySQL 연결 초기화 및 연결 함수
 bool initMySQL(MySQLConnection *mysql);
@@ -34,7 +27,7 @@ bool initMySQL(MySQLConnection *mysql);
 void closeMySQL(MySQLConnection *mysql);
 
 // 점수 저장 함수
-bool saveData(MySQLConnection *mysql, int temp, int humi, int sun);
+bool saveData(MySQLConnection *mysql, (char *)buffer);
 
 // 시간별 통계 업데이트 함수
 bool updateHourStats(MySQLConnection *mysql);

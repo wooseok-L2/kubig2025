@@ -49,7 +49,7 @@ bool saveData(MySQLConnection *mysql, int temp, int humi, int soil,int sun, char
     time_t t = time(NULL);
     struct tm *tm = localtime(&t);
     char time[11];
-    strftime(time, sizeof(time), "%Y-%m-%d", tm);
+    strftime(time, sizeof(time), "%Y-%m-%d %H:%M:%S", tm);
 
     // 쿼리 준비
     sprintf(query, "INSERT INTO data_records (Time, Temperature, Humidity, SoilMoisture, Sunshine, Cond) VALUES ('%s', %d, %d, %d, %d, '%s')",

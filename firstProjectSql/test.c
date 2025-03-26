@@ -41,30 +41,7 @@ void closeMySQL(MySQLConnection *mysql)
     }
 }
 
-// 시리얼 포트 설정 함수
-struct sp_port *setup_serial_port(const char *port_name) {
-    struct sp_port *port;
-    sp_get_port_by_name(port_name, &port);
-    sp_open(port, SP_MODE_READ_WRITE);
-    sp_set_baudrate(port, 9600);  // Baud rate 설정
-    printf("Serial port %s opened successfully.\n", port_name);
-    return port;
-}
-
-// serial data send
-void *send_serial_data(void *arg) {
-    ThreadData *data = (ThreadData *)arg;
-
-    // 송신할 데이터 예시
-    char message[] = "Hello from Server!";    
-    
-    sp_blocking_write(data->port, message, sizeof(message), 1000);
-    printf("Sent serial data: %s\n", message);
-
-    return NULL;
-}
-
-bool saveData(MySQLConnection *mysql, int temp, int humi, int soil,int sun, char *cond)
+bool saveData(MySQLConnection *mysql, (char *)buffer)
 {
     char query[255];
 
@@ -75,8 +52,8 @@ bool saveData(MySQLConnection *mysql, int temp, int humi, int soil,int sun, char
     strftime(time, sizeof(time), "%Y-%m-%d", tm);
 
     // 쿼리 준비
-    sprintf(query, "INSERT INTO data_records (Time, Temperature, Humidity, SoilMoisture, Sunshine, Cond) VALUES ('%s', %d, %d, %d, %d, '%s')",
-             time, temp, humi, soil, sun, cond);
+    sprintf(query, "INSERT INTO data_records (Time, Temperature, Humidity, SoilMoisture, Sunshine, Cond) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')",
+             time, buffer[0], buffer[1], buffer[2], buffer[3], buffer[4]);
 
     // 쿼리 실행
     if (mysql_query(mysql->conn, query))
