@@ -41,6 +41,29 @@ void closeMySQL(MySQLConnection *mysql)
     }
 }
 
+// 시리얼 포트 설정 함수
+struct sp_port *setup_serial_port(const char *port_name) {
+    struct sp_port *port;
+    sp_get_port_by_name(port_name, &port);
+    sp_open(port, SP_MODE_READ_WRITE);
+    sp_set_baudrate(port, 9600);  // Baud rate 설정
+    printf("Serial port %s opened successfully.\n", port_name);
+    return port;
+}
+
+// serial data send
+void *send_serial_data(void *arg) {
+    ThreadData *data = (ThreadData *)arg;
+
+    // 송신할 데이터 예시
+    char message[] = "Hello from Server!";    
+    
+    sp_blocking_write(data->port, message, sizeof(message), 1000);
+    printf("Sent serial data: %s\n", message);
+
+    return NULL;
+}
+
 bool saveData(MySQLConnection *mysql, int temp, int humi, int soil,int sun, char *cond)
 {
     char query[255];
