@@ -1,80 +1,159 @@
-// SHT 5초 마다 한번씩 온습도 측정 - timer0 5초 주기를 계산.
-// 외부 EEPROM  의 주소는 0100-> 온도 0200-> 습도
-// SHT 에서 측정 실패는 error 성공 시에만 EEPROM 에 저장.
-// INT4 번 써서(스위치를 누르면) EEPROM 에 데이터를 읽어서 UART로 출력하기.
-// 0 ~ 99.9 표현하려면 1 byte 로는 부족하다. ???
 
-#include "SHT2x.h"
-#include "at25160.h"
+#include "farmsql.h"
+#include "serial.h"
+#include "pthread.h"
+#include "lcd.h"
 #include "uart0.h"
+#include <util/delay.h>
 #include <avr/interrupt.h>
-#include <avr/io.h>
+#include "SHT2x.h"
+#include "TWI_driver.h"
 
-volatile uint8_t readFlag = 1, txFlag = 0;
-uint16_t timerCount = 0;
-uint16_t temperatureC, humidityRH;
+void get_sensor_data(SensorData *tx);
+uint16_t read_adc(uint8_t channel);
+void send_uart_data(SensorData *tx);
+void printf_2dot1(uint8_t sense, uint16_t sense_temp);
+volatile unsigned int ADC_result = 0; // 범위 0~1023
+uint16_t temperaturC, humidityRH;
 
-int main(void)
-{
-    SPI_Init();
+int main(void){
 
-    Init_TWI();
-    SHT2x_Init();
+    MySQLConnection sqlinfo; // sql 데이터 저장 변수
+    SaveDataArgs args;       // sql, sensordata 넣는 구조체
+    SensorData rx;           // 수신 sensor data 저장
+    SensorData tx;           // 송신 sensor data 저장
+    const char *port_name;   // 포트이름 설정
+    uint16_t buffer[10];     // 수신데이터 저장
+    struct sp_port *port;    // 포트 포인터 저장 변수
+    pthread_t save_thread;   // pthread ID
+    initMySQL(*sqlinfo);     // sql 초기화
+    port = setup_serial_port(port_name);     //시리얼 포트 설정
+
 
     uart0Init();
-    DDRE = _BV(PE1); // 0x02;
+    lcdInit();
+    SHT2x_Init();
+    nt16 sRH;
+    nt16 sT;
+    uint8_t error;
 
-    // interrupt 4 설정
-    EICRB = 0x03; // int 4 상승 엣지
-    EIMSK = 0x10;
-
-    TCCR0 = 0x07; // 1024 분주비
-    TCNT0 = 112;  // 144 세기.. 16M /1024/ 0.1초 ....
-    TIMSK = 0x01; // timer0 ovf enable
-
-    sei();
+    stdin = &INPUT;
     stdout = &OUTPUT;
 
-    while (1)
-    {
-        if (readFlag)
+    DDRC = 0x0F; // 1, 2, 3, 4 출력 설정.
+    ADMUX = 0x40;   // ADC0 single mode, 0번 채널, 3.3V 외부 기준 전압(AREF)
+    ADCSRA = 0xAF;  // 10101111 ADC 허가, free running mode, Intterrupt en, 128 분주비
+    ADCSRA |= 0x40; // ADC 개시
+    sei();          // 전역 인터럽트 허용
+
+    lcdGotoXY(0, 0);
+
+    while(1){
         {
-            // i2c temp read -> spi eeprom write
-            SHT2x_MeasureHM(TEMP, (nt16 *)&temperatureC);
-            SHT2x_MeasureHM(HUMIDITY, (nt16 *)&humidityRH);
-            temperatureC = SHT2x_CalcTemperatureC(temperatureC) * 10;
-            humidityRH = SHT2x_CalcRH(humidityRH) * 10;
-            at25160_Write_Arry(0x0100, (uint8_t *)&temperatureC, 2);
-            at25160_Write_Arry(0x0200, (uint8_t *)&humidityRH, 2);
-            readFlag = 0;
+            error |= SHT2x_MeasureHM(HUMIDITY, &sRH);
+            error |= SHT2x_MeasureHM(TEMP, &sT);
+            temperaturC = SHT2x_CalcTemperatureC(sT.u16) * 10;
+            humidityRH = SHT2x_CalcRH(sRH.u16) * 10;
+            if (error == SUCCESS)
+            {
+                lcdGotoXY(0, 0);
+                printf_2dot1(TEMP, temperaturC);
+                lcdGotoXY(0, 1);
+                printf_2dot1(HUMIDITY, humidityRH);
+            }
+            else
+            {
+                lcdGotoXY(0, 0);
+                lcdPrintData(" Temp: --.-C", 12);
+                lcdGotoXY(0, 1);
+                lcdPrintData(" Humi: --.-%", 12);
+            }
+            _delay_ms(1000);
         }
-        if (txFlag)
+
         {
-            // eeprom read -> uart printf();
-            at25160_Read_Arry(0x0100, (uint8_t *)&temperatureC, 2);
-            at25160_Read_Arry(0x0200, (uint8_t *)&humidityRH, 2);
-            uart0PrintString("\n\rTemp: ");
-            printf("%u.%u", temperatureC / 10, temperatureC % 10);
-            uart0PrintString("\n\rHumi: ");
-            printf("%u.%u", humidityRH / 10, humidityRH % 10);
-            txFlag = 0;
+            char buf[16];
+            sprintf(buf, "L:%u   ", ADC_result); // ADC 원시값 표시, 공백으로 이전 자리 지움.
+            lcdGotoXY(0, 1);                     // LCD 두번째 줄에 표시
+            lcdPrintData(buf, strlen(buf));
+            _delay_ms(1000);
         }
+        get_sensor_data(tx);
+
+        // save data in sql
+        receive_serial_data(port, buffer);    //SensorData rx에 데이터 저장
+        args.mysql = sqlinfo;
+        args.data = rx;
+
+        // pthread를 사용해 스레드 생성
+        pthread_create(&save_thread, NULL, saveDataThread, &args);
+        // 스레드 종료 대기
+        pthread_join(save_thread, NULL); // 스레드 종료 대기
+        // MySQL 연결 종료
+        closeMySQL(sqlinfo);
+
+
+    
     }
-    return 0;
 }
 
-ISR(TIMER0_OVF_vect)
-{
-    timerCount++;
-    if (timerCount >= 500) // 5초 확인
-    {
-        timerCount = 0;
-        readFlag = 1;
-    }
-    TCNT0 = 112;
+
+void get_sensor_data(SensorData *tx) {
+    tx->temperature = temperaturC; // ADC 채널 0에서 온도 데이터 읽기
+    tx->humidity = humidityRH;    // ADC 채널 1에서 습도 데이터 읽기
+    tx->light = ADC_result ;       // ADC 채널 3에서 조도 데이터 읽기
 }
 
-ISR(INT4_vect)
+
+// atmega -> pc 구조체 저장된 데이터를 바이트 배열로 변환
+void send_uart_data(SensorData *tx) {
+    uint16_t *data = (uint16_t *)tx;
+    for (int i = 0; i < sizeof(SensorData); i++) {
+        while (!(UCSR0A & (1 << UDRE0)));   // UART 송신 가능 대기
+        UDR0 = data[i];                     // 데이터 전송
+
+    }
+}
+
+void printf_2dot1(uint8_t sense, uint16_t sense_temp)
 {
-    txFlag = 1;
+    uint8_t s100, s10;
+    if (sense == TEMP)
+    {
+        lcdPrintData(" Temp: ", 7);
+
+        s100 = sense_temp / 100; // 100의 자리
+        if (s100 > 0)
+            lcdDataWrite(s100 + '0');
+
+        s10 = sense_temp / 10 - s100 * 10; // 10의 자리
+        if (s10 > 0)
+            lcdDataWrite(s10 + '0');
+        lcdDataWrite('.');                   // . 프린트
+        lcdDataWrite(sense_temp % 10 + '0'); // 1의 자리
+        lcdDataWrite('C');                   // C 프린트
+    }
+    else if (sense == HUMIDITY)
+    {
+        lcdPrintData(" Humi: ", 7);
+        s100 = sense_temp / 100; // 100의 자리
+        if (s100 > 0)
+            lcdDataWrite(s100 + '0');
+
+        s10 = sense_temp / 10 - s100 * 10; // 10의 자리
+        if (s10 > 0)
+            lcdDataWrite(s10 + '0');
+        lcdDataWrite('.');                   // . 프린트
+        lcdDataWrite(sense_temp % 10 + '0'); // 1의 자리
+        lcdDataWrite('%');                   // % 프린트
+    }
+}
+
+SIGNAL(ADC_vect)
+{
+    cli();
+
+    ADC_result = ADC; // 전압이 디지털로 변환된 값 읽어오기. 0-1023
+
+    sei();
 }

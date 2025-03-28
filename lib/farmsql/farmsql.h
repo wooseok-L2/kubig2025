@@ -1,7 +1,7 @@
-#ifndef PJSQL_H
-#define PJSQL_H
+#ifndef FARMSQL_H
+#define FARMSQL_H
 
-#include <mysql/mysql.h>
+#include <mysql.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -26,8 +26,8 @@ bool initMySQL(MySQLConnection *mysql);
 // MySQL 연결 종료 함수
 void closeMySQL(MySQLConnection *mysql);
 
-// 점수 저장 함수
-bool saveData(MySQLConnection *mysql, (char *)buffer);
+// Data 저장 함수
+bool saveData(MySQLConnection *mysql, SensorData *rx);
 
 // 시간별 통계 업데이트 함수
 bool updateHourStats(MySQLConnection *mysql);
@@ -38,4 +38,4 @@ void printDayStatsHistory(MySQLConnection *mysql, const char *day);
 // 사용자 입력 대기 함수 추가
 void waitEnter(void);
 
-#endif // BOWLINGSQL_H
+#endif 

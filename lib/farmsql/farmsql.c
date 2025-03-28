@@ -1,4 +1,5 @@
-#include "pjsql.h"
+#include "farmsql.h"
+#include "serial.h"
 #include <time.h>
 
 
@@ -41,19 +42,19 @@ void closeMySQL(MySQLConnection *mysql)
     }
 }
 
-bool saveData(MySQLConnection *mysql, (char *)buffer)
+bool saveData(MySQLConnection *mysql, SensorData *rx)
 {
-    char query[255];
+    char query[512];
 
     // 현재 날짜 가져오기
     time_t t = time(NULL);
     struct tm *tm = localtime(&t);
-    char time[11];
-    strftime(time, sizeof(time), "%Y-%m-%d", tm);
+    char time[30];
+    strftime(time, sizeof(time), "%Y-%m-%d %H:%M:%S", tm);
 
     // 쿼리 준비
-    sprintf(query, "INSERT INTO data_records (Time, Temperature, Humidity, SoilMoisture, Sunshine, Cond) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')",
-             time, buffer[0], buffer[1], buffer[2], buffer[3], buffer[4]);
+    snprintf(query, sizeof(query), "INSERT INTO data_records (Time, Temperature, Humidity, Sunshine) VALUES ('%s', %d, %d, %d)",
+             time, rx->temperature, rx->humidity, rx->sun);
 
     // 쿼리 실행
     if (mysql_query(mysql->conn, query))
