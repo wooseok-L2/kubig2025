@@ -13,11 +13,10 @@
 #define SW3 27
 #define SW4 22
 
-void SW_ISR1(void);  // made by user..
-void SW_ISR2(void); 
-void SW_ISR3(void); 
-void SW_ISR4(void); 
-
+void SW_ISR1(void);
+void SW_ISR2(void);
+void SW_ISR3(void);
+void SW_ISR4(void);
 
 int main(void)
 {
@@ -29,74 +28,82 @@ int main(void)
     wiringPiISR(SW2, INT_EDGE_RISING, SW_ISR2);
     wiringPiISR(SW3, INT_EDGE_RISING, SW_ISR3);
     wiringPiISR(SW4, INT_EDGE_RISING, SW_ISR4);
-    
+
     for (int i = 0; i < 4; ++i)
     {
         pinMode(led[i], OUTPUT);
         pinMode(sw[i], INPUT);
     }
-    
+
     while (1)
     {
     }
     return 0;
-} 
+}
 
-void SW_ISR1(void){
-    
+void SW_ISR1(void)
+{
     static int flag_led = 0;
-    if(flag_led == 0){
-        printf("SWITCH1 ON \n");
+    if (flag_led == 0)
+    {
+        printf("SWITCH1 ON\n");
         digitalWrite(LED1, HIGH);
         flag_led = 1;
     }
-    else{
-        printf("SWITCH1 OFF \n");
+    else
+    {
+        printf("SWITCH1 OFF\n");
         digitalWrite(LED1, LOW);
         flag_led = 0;
     }
 }
 
-void SW_ISR2(void){
-    
+void SW_ISR2(void)
+{
     static int flag_led = 0;
-    if(flag_led == 0){
-        printf("SWITCH2 ON \n");
+    if (flag_led == 0)
+    {
+        printf("SWITCH2 ON\n");
         digitalWrite(LED2, HIGH);
         flag_led = 1;
     }
-    else{
-        printf("SWITCH2 OFF \n");
+    else
+    {
+        printf("SWITCH2 OFF\n");
         digitalWrite(LED2, LOW);
         flag_led = 0;
     }
 }
 
-void SW_ISR3(void){
-    
+void SW_ISR3(void)
+{
     static int flag_led = 0;
-    if(flag_led == 0){
-        printf("SWITCH3 ON \n");
+    if (flag_led == 0)
+    {
+        printf("SWITCH3 ON\n");
         digitalWrite(LED3, HIGH);
         flag_led = 1;
     }
-    else{
-        printf("SWITCH3 OFF \n");
+    else
+    {
+        printf("SWITCH3 OFF\n");
         digitalWrite(LED3, LOW);
         flag_led = 0;
     }
 }
 
-void SW_ISR4(void){
-    
+void SW_ISR4(void)
+{
     static int flag_led = 0;
-    if(flag_led == 0){
-        printf("SWITCH4 ON \n");
+    if (flag_led == 0)
+    {
+        printf("SWITCH4 ON\n");
         digitalWrite(LED4, HIGH);
         flag_led = 1;
     }
-    else{
-        printf("SWITCH4 OFF \n");
+    else
+    {
+        printf("SWITCH4 OFF\n");
         digitalWrite(LED4, LOW);
         flag_led = 0;
     }

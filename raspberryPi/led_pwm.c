@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <wiringPi.h>
+#include <softPwm.h>
 
 // gpio pin
 #define LED1 23
@@ -16,12 +17,20 @@ int main(void)
     pinMode(LED2, OUTPUT);
     pinMode(LED3, OUTPUT);
     pinMode(LED4, OUTPUT);
+
+    // set pwm (this is software pwm -> do not use this code for cpu)
+    softPwmCreate(LED1, 255, 255);
+    softPwmCreate(LED2, 120, 255);
+    softPwmCreate(LED3, 0, 255);
+    softPwmCreate(LED4, 0, 255);
+
     while (1)
     {
-        digitalWrite(LED1, LOW);
-        digitalWrite(LED2, LOW);
-        digitalWrite(LED3, LOW);
-        digitalWrite(LED4, LOW);
+        for (int i = 0; i < 255; i++){
+            softPwmWrite(LED4, i);
+            delay(100);
+        }
+        
     }
     printf("안녕하세요!");
     return 0;
