@@ -19,6 +19,12 @@ int main(void)
 
     int servo_0 = 120;
     int servo_180 = 500;
+    
+    int result = wiringPiI2CWriteReg16(rgb_servo_fd, PCA9685_LED_ON_L + 14, servo_0);
+    if (result == -1) {
+        printf("I2C 통신 실패\n");
+    }
+    
 
     wiringPiI2CWriteReg16(rgb_servo_fd, PCA9685_LED_ON_L + 12, 0);     // servo1
     wiringPiI2CWriteReg16(rgb_servo_fd, PCA9685_LED_ON_L + 14, servo_0);     // servo1 pwm duty
@@ -42,7 +48,7 @@ int main(void)
 
 void i2C_init(int fd, int freq)
 {
-    wiringPiI2CWriteReg8(fd, PCA9685_MODE1, 0x01);    // 리셋
+    wiringPiI2CWriteReg8(fd, PCA9685_MODE1, 0x10);    // 리셋
     delay(10);                                        // 리셋 후 대기
     wiringPiI2CWriteReg8(fd, PCA9685_PRESCALE, freq); // 주파수 설정
     wiringPiI2CWriteReg8(fd, PCA9685_MODE1, 0xA1);
