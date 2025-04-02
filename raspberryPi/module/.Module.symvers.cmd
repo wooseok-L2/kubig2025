@@ -1,0 +1,1 @@
+savedcmd_/home/lws/kubig2025/raspberryPi/module/Module.symvers :=  scripts/mod/modpost -M -m -a      -o /home/lws/kubig2025/raspberryPi/module/Module.symvers -T /home/lws/kubig2025/raspberryPi/module/modules.order -i Module.symvers -e 
