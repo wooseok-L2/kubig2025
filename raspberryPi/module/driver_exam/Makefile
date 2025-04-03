@@ -1,5 +1,5 @@
 CC = gcc
-obj-m := led_module.o
+obj-m := driver_exam.o
 KDIR := /lib/modules/$(shell uname -r)/build
 PWD := $(shell pwd)
 default:

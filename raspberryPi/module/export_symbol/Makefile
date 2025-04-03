@@ -1,5 +1,7 @@
 CC = gcc
-obj-m := led_module.o
+obj-m := export_symbol_a.o
+obj-m += export_symbol_b.o
+obj-m += export_symbol_c.o 
 KDIR := /lib/modules/$(shell uname -r)/build
 PWD := $(shell pwd)
 default:
