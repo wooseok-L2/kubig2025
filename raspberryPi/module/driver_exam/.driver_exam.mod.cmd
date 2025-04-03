@@ -1,1 +1,0 @@
-savedcmd_/home/lws/kubig2025/raspberryPi/module/driver_exam/driver_exam.mod := printf '%s\n'   driver_exam.o | awk '!x[$$0]++ { print("/home/lws/kubig2025/raspberryPi/module/driver_exam/"$$0) }' > /home/lws/kubig2025/raspberryPi/module/driver_exam/driver_exam.mod
