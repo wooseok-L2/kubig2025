@@ -1,32 +1,36 @@
-
+//
+// !!! WARNING !!! AUTO-GENERATED FILE!
+// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
+// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
+//
 {
     "configurations": [
         {
             "name": "PlatformIO",
             "includePath": [
-                "/home/lws/kulws2025/src",
-                "/home/lws/kulws2025/lib/uart0",
-                "/home/lws/kulws2025/lib/lcd",
-                "/home/lws/kulws2025/lib/serial",
-                "/home/lws/kulws2025/lib/farmsql",
-                "/home/lws/kulws2025/lib/at25",
-                "/home/lws/kulws2025/lib/avr-uart",
-                "/home/lws/kulws2025/lib/pthread",
-                "/home/lws/kulws2025/lib/sht20",
+                "/home/lws/kulws2025/kubig2025/src",
+                "/home/lws/kulws2025/kubig2025/lib/uart0",
+                "/home/lws/kulws2025/kubig2025/lib/lcd",
+                "/home/lws/kulws2025/kubig2025/lib/pthread",
+                "/home/lws/kulws2025/kubig2025/lib/serial",
+                "/home/lws/kulws2025/kubig2025/lib/farmsql",
+                "/home/lws/kulws2025/kubig2025/lib/sht20",
+                "/home/lws/kulws2025/kubig2025/lib/at25",
+                "/home/lws/kulws2025/kubig2025/lib/avr-uart",
                 ""
             ],
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
                 "path": [
-                    "/home/lws/kulws2025/src",
-                    "/home/lws/kulws2025/lib/uart0",
-                    "/home/lws/kulws2025/lib/lcd",
-                    "/home/lws/kulws2025/lib/serial",
-                    "/home/lws/kulws2025/lib/farmsql",
-                    "/home/lws/kulws2025/lib/at25",
-                    "/home/lws/kulws2025/lib/avr-uart",
-                    "/home/lws/kulws2025/lib/pthread",
-                    "/home/lws/kulws2025/lib/sht20",
+                    "/home/lws/kulws2025/kubig2025/src",
+                    "/home/lws/kulws2025/kubig2025/lib/uart0",
+                    "/home/lws/kulws2025/kubig2025/lib/lcd",
+                    "/home/lws/kulws2025/kubig2025/lib/pthread",
+                    "/home/lws/kulws2025/kubig2025/lib/serial",
+                    "/home/lws/kulws2025/kubig2025/lib/farmsql",
+                    "/home/lws/kulws2025/kubig2025/lib/sht20",
+                    "/home/lws/kulws2025/kubig2025/lib/at25",
+                    "/home/lws/kulws2025/kubig2025/lib/avr-uart",
                     ""
                 ]
             },
