@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <string.h>
 
 void initQueue(Queue *pq, int size, int elesize)
 {
@@ -9,7 +10,7 @@ void initQueue(Queue *pq, int size, int elesize)
     pq->rear = 0;
     pq->size = size;
     pq->elesize = elesize;
-    pq->parr = malloc(size * sizeof(int));
+    pq->parr = malloc(size * elesize);
     assert(pq->parr != 0);
 }
 
@@ -18,7 +19,7 @@ void cleanupQueue(Queue *pq)
     free(pq->parr);
 }
 
-void push(Queue *pq, int data)
+void push(Queue *pq, const void *pdata)
 {
     // pq->array[pq->rear] = data;
     
@@ -28,12 +29,12 @@ void push(Queue *pq, int data)
     }
     
     // assert(pq->rear != pq->size);
-    
-    pq->parr[pq->rear] = data;
+    memcpy((unsigned char *)pq->parr + (pq->rear * pq->elesize), pdata, pq->elesize);
+    // pq->parr[pq->rear] = data;
     ++pq->rear;
 }
 
-int pop(Queue *pq)
+void pop(Queue *pq, void *pdata)
 {
     if ((pq->front) == pq->size){
     	fprintf(stdout, "Queue is empty \n");
@@ -44,9 +45,11 @@ int pop(Queue *pq)
     
     int i = pq->front;
 
+    memcpy(pdata, (unsigned char *)pq->parr + (i * pq->elesize), pq->elesize);
+
     ++(pq->front);
     
-    return pq->parr[i];
+   // return pq->parr[i];
     
 }
 

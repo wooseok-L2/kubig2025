@@ -6,17 +6,17 @@
 
 typedef struct queue{
     // int array[QUEUESIZE];
-    int *parr;
+    void *parr;
     int rear;
     int front;
     int size;
     int elesize;
 } Queue;                                // struct stack -> Stack
 
-void initQueue(Queue *pq, int size);
+void initQueue(Queue *pq, int size, int elesize);
 void cleanupQueue(Queue *pq);
-void push(Queue *pq, int data);         // func. declaration
-int pop(Queue *pq);
+void push(Queue *pq, const void *pdata);        // func. declaration
+void pop(Queue *pq, void *pdata);
 
 
 #endif
