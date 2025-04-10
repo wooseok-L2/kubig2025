@@ -45,13 +45,19 @@ void insertNode(List *pl, int prevdata, int data)
         p->next = tmp;
     }
     else {
-        // ........................fuck........
+        
     }
 }
 
 void deleteNode(List *pl, int data)
 {
-
+    Node *p = pl->ptr->next;
+    while(p ){
+        if (p->data == data){
+            break;
+        }
+        p = p->next;
+    }
 }
 
 void printList(const List *pl)
