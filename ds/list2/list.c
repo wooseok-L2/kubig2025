@@ -30,7 +30,23 @@ void insertFirstNode(List *pl, int data)
 
 void insertNode(List *pl, int prevdata, int data)
 {
-    Node *p = 
+    Node *p = pl->ptr->next;
+    while(p ){
+        if (p->data == prevdata){
+            break;
+        }
+        p = p->next;
+    }
+
+    if (p ){
+        Node *tmp = malloc(sizeof(Node));
+        tmp->data = data;
+        tmp->next = p->next;
+        p->next = tmp;
+    }
+    else {
+        // ........................fuck........
+    }
 }
 
 void deleteNode(List *pl, int data)
