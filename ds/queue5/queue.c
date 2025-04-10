@@ -25,7 +25,7 @@ void push(Queue *pq, const void *pdata)
     
     if ((pq->rear) == pq->size){
     	fprintf(stdout, "Queue is full \n");
-    	exit(2);
+    	exit(1);
     }
     
     // assert(pq->rear != pq->size);

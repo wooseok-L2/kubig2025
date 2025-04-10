@@ -26,8 +26,8 @@ int main(void)
     printf("q2 2nd pop() : %d \n", pop(&q2));
     printf("q2 3rd pop() : %d \n", pop(&q2));
     
-    cleanupQueue(q1);
-    cleanupQueue(q2);    
+    cleanupQueue(&q1);
+    cleanupQueue(&q2);    
     
     return 0;
 }

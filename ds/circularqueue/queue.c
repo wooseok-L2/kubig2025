@@ -21,15 +21,16 @@ void push(Queue *pq, int data)
 {
     // pq->array[pq->rear] = data;
     
-    if ((pq->rear) == pq->size){
-    	fprintf(stdout, "Queue is full \n");
-    	exit(2);
-    }
+    // if ((pq->rear) == pq->size){
+    // 	fprintf(stdout, "Queue is full \n");
+    // 	exit(2);
+    // }
     
-    // assert(!(pq->rear == pq->size));
+    assert((pq->rear + 1) % pq->size != pq->front);
     
     pq->parr[pq->rear] = data;
-    ++pq->rear;
+    // ++pq->rear;
+    pq->rear = (pq->rear + 1) % pq->size;
 }
 
 int pop(Queue *pq)
@@ -43,7 +44,8 @@ int pop(Queue *pq)
     
     int i = pq->front;
 
-    ++(pq->front);
+    // ++(pq->front);
+    pq->front = (pq->front + 1) % pq->size;
     
     return pq->parr[i];
     
