@@ -1,13 +1,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "list.h"
+#include <assert.h>
+
+static Node *creatNode(int data, Node *next)  // Cannot use at main.c
+{
+    Node *p = malloc(sizeof(Node));
+    assert(p );
+    p->data = data;
+    p->next = next;
+
+    return p;
+}
 
 void initList(List *pl)
 {
-    pl->ptr = malloc(sizeof(Node));
+    // pl->ptr = malloc(sizeof(Node));
+    // pl->ptr->next = NULL;
+    pl->ptr = creatNode(-1, NULL);
     // assert();
     // pl->ptr->data = ???;
-    pl->ptr->next = NULL;
 }
 
 void cleanupList(List *pl)
@@ -22,10 +34,11 @@ void cleanupList(List *pl)
 
 void insertFirstNode(List *pl, int data)
 {
-    Node *p = malloc(sizeof(Node));
-    p->data = data;
-    p->next = pl->ptr->next;
-    pl->ptr->next = p;
+    // Node *p = malloc(sizeof(Node));
+    // p->data = data;
+    // p->next = pl->ptr->next;
+    // pl->ptr->next = p;
+    pl->ptr->next = creatNode(data, pl->ptr->next);
 }
 
 void insertNode(List *pl, int prevdata, int data)
@@ -39,10 +52,11 @@ void insertNode(List *pl, int prevdata, int data)
     }
 
     if (p ){
-        Node *tmp = malloc(sizeof(Node));
-        tmp->data = data;
-        tmp->next = p->next;
-        p->next = tmp;
+        // Node *tmp = malloc(sizeof(Node));
+        // tmp->data = data;
+        // tmp->next = p->next;
+        // p->next = tmp;
+        p->next = creatNode(data, p->next);
     }
 }
 
