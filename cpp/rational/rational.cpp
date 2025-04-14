@@ -1,22 +1,19 @@
 #include "rational.h"
 #include <iostream>
+#include <cassert>
 
 Rational::Rational(int p, int q)
 {
     this->p = p;
     this->q = q;
-    if (q == 0){
-        std::cout << "q cannot have 0" << std::endl;
-    }
+    assert(q != 0);
 }
 
-Rational::Rational(int q)
+Rational::Rational(int p)
 {
-    this->p = 0;
-    this->q = q;
-    if (q == 0){
-        std::cout << "q cannot have 0" << std::endl;
-    }
+    this->p = p;
+    this->q = 1;
+    assert(q != 0);
 }
 
 Rational::Rational()
@@ -30,25 +27,23 @@ Rational::~Rational()
     // 동적할당 안하면 소멸자 사용 안해도 딤
 }
 
-int Rational::numerator()
+int Rational::getnumerator()
 {
     return this->p;
 }
 
-int Rational::denominator()
+int Rational::getdenominator()
 {
     return this->q;
 }
 
-void Rational::numerator(int p)
+void Rational::setnumerator(int p)
 {
     this->p = p;
 }
 
-void Rational::denominator(int q)
+void Rational::setdenominator(int q)
 {
     this->q = q;
-    if (q == 0){
-        std::cout << "q cannot have 0" << std::endl;
-    }
+    assert(q != 0);
 }

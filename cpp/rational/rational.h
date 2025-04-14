@@ -8,16 +8,16 @@ private: // implemetation
 
 public:  // interface
     Rational(int p, int q);       // constructor
-    Rational(int q);
+    Rational(int p);
     // Complex(double im);  사용불가, 둘 중 하나만 사용 가능
     Rational();  
     ~Rational();      // destructor
 
-    int numerator();   // get
-    int denominator();   // get
+    int getnumerator();   // get
+    int getdenominator();   // get
 
-    void numerator(int p);   // set
-    void denominator(int q);   // set
+    void setnumerator(int p);   // set
+    void setdenominator(int q);   // set
 
 
 };

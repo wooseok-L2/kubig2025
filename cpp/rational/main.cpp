@@ -7,12 +7,12 @@ int main()
     Rational r2(3);          // (3.0, 0.0i)
     Rational r3;               // (0.0. 0.0i)
 
-    r3.numerator(3);
-    r3.denominator(4);
+    r3.setnumerator(r1.getnumerator());
+    r3.setdenominator(r1.getdenominator());
 
-    std::cout << "r1 : ( " << r1.numerator() << " / " << r1.denominator() << " ) " << std::endl;
-    std::cout << "r2 : ( " << r2.numerator() << " / " << r2.denominator() << " ) " << std::endl;
-    std::cout << "r3 : ( " << r3.numerator() << " / " << r3.denominator() << " ) " << std::endl;
+    std::cout << "r1 : ( " << r1.getnumerator() << " / " << r1.getdenominator() << " ) " << std::endl;
+    std::cout << "r2 : ( " << r2.getnumerator() << " / " << r2.getdenominator() << " ) " << std::endl;
+    std::cout << "r3 : ( " << r3.getnumerator() << " / " << r3.getdenominator() << " ) " << std::endl;
 
     return 0;
 }
