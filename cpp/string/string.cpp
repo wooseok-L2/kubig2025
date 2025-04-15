@@ -32,6 +32,23 @@ String::~String()
     delete [] this->str;
 }
 
+String& String::operator = (const String& rhs)
+{
+    delete [] this->str;
+    this->str = new char(rhs.len);
+    assert(this->str);
+    strcpy(this->str, rhs.str);
+
+    this->len = rhs.len;
+
+    return *this;
+}
+
+bool String::operator == (const String& rhs)
+{
+    return strcmp(this->str, rhs.str) == 0;
+}
+
 const char * String::c_str()
 {
     return this->str;
