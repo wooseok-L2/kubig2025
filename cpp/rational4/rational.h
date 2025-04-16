@@ -11,13 +11,14 @@ private: // implemetation
 
 public:  // interface
     Rational(int p = 0, int q = 1);       // constructor 
-    ~Rational();      // destructor
-    Rational(const Rational &rr);
     void divisorF(Rational &rr);
-    Rational& operator = (const Rational &rr);
+    Rational& operator+=(const Rational &rr);
+    bool operator != (const Rational &rr);
     bool operator == (const Rational &rr);
     const Rational operator + (const Rational &rr);
     const Rational operator - (const Rational &rr);
+    Rational& operator ++ ();
+    Rational operator ++ (int);
 
 };
 
