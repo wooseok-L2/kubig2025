@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cassert>
 
-int gcd(int a, int b) 
+int gcd(int a, int b)    //유클리드 호제법
 {
     while (b != 0) {
         int temp = b;
@@ -32,6 +32,8 @@ Rational::Rational(int p, int q)
     this->p = p;
     this->q = q;
     assert(q != 0);
+
+    divisorF(*this);
 }
 
 Rational& Rational::operator+=(const Rational &rr)
@@ -43,12 +45,12 @@ Rational& Rational::operator+=(const Rational &rr)
     return *this;
 }
 
-bool Rational::operator==(const Rational &rr)
+bool Rational::operator==(const Rational &rr) const
 {
     return (this->p == rr.p && this->q == rr.q);
 }
 
-bool Rational::operator!=(const Rational &rr)
+bool Rational::operator!=(const Rational &rr) const
 {
     return !(this->p == rr.p && this->q == rr.q);
     // return !this->operator==(rr);
@@ -57,7 +59,6 @@ bool Rational::operator!=(const Rational &rr)
 const Rational Rational::operator+(const Rational &rr)
 {
     Rational result((this->p * rr.q) + (rr.p * this->q), this->q * rr.q);
-    divisorF(result);
 
     return result;
 }
@@ -65,14 +66,13 @@ const Rational Rational::operator+(const Rational &rr)
 const Rational Rational::operator-(const Rational &rr)
 {
     Rational result((this->p * rr.q) - (rr.p * this->q), this->q * rr.q);
-    divisorF(result);
+
     return result;    
 }
 
 Rational& Rational::operator++()
 {
     this->p += this->p;
-    divisorF(*this);
 
     return *this;
 }
@@ -81,7 +81,6 @@ Rational Rational::operator++(int)
 {
     Rational tmp = *this;
     this->p += this->p;
-    divisorF(tmp);
 
     return tmp;
 }

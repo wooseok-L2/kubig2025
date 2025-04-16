@@ -6,7 +6,8 @@ int main()
     Rational r1;     
     Rational r2 = 3;         
     Rational r3(3, 4);    
-    Rational r4 = r3;       // Rational c4(c3);     
+    Rational r4 = r3;       // Rational c4(c3);
+    Rational r5(9, 12);     // 3/4     
 
     r1 = r3;
 
@@ -29,6 +30,7 @@ int main()
     std::cout << "r4 : " << r4 << std::endl; 
     //std::cout << "r1 == r4 : " << r1 == r4 << std::endl;
     //std::cout << "r1 != r3 : " << r1 != r3 << std::endl; 
+    std::cout << "r5 : " << r5 << std::endl; 
 
     return 0;
 }

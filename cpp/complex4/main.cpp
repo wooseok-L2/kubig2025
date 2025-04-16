@@ -28,5 +28,11 @@ int main()
     std::cout << "c3 : " << c3 << std::endl;
     std::cout << "c4 : " << c4 << std::endl;
 
+    const Complex c5(3.0, 5.0);
+    // c5.real(4.0);
+
+    std::cout << "c5 : (" << c5.real() << ", " << c5.imag() << "i)" << std::endl;
+
+
     return 0;
 }
