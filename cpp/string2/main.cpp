@@ -19,7 +19,7 @@ int main()
     std::cout << "s2 : " << s2 << std::endl;
     std::cout << "s3 : " << s3 << std::endl;
     std::cout << "s4 : " << s4 << std::endl;
-    std::cout << "s5 : " << s5 << std::endl;
+    std::cout << "s5 : " << s5 << " , s5 len : "<< s5.size() << std::endl;
 
     return 0;
 }
