@@ -10,6 +10,8 @@ int main()
     s1 = s2;
     s1 == s2;
 
+    s1 = s1;   // delete [] str_; s1을 제거하고 만들기 때문에 내용이 사라짐
+
     String s4 = "- eric claption";
     String s5 = s2 + s4;
 

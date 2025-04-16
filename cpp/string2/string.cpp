@@ -42,12 +42,14 @@ String::String(const String& rhs)
 
 String& String::operator = (const String& rhs)
 {
-    delete [] str_;
-    str_ = new char[rhs.len_ + 1];
-    assert(str_ );
-    strcpy(str_, rhs.str_);
-
-    len_ = rhs.len_;
+    if (this != &rhs) {    // 주소가 같은지 비교
+        delete [] str_;
+        str_ = new char[rhs.len_ + 1];
+        assert(str_ );
+        strcpy(str_, rhs.str_);
+        
+        len_ = rhs.len_;
+    }
 
     return *this;
 }
