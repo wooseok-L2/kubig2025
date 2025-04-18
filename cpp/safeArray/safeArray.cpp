@@ -22,7 +22,7 @@ SafeArray::SafeArray(const SafeArray& rhs)
 SafeArray& SafeArray::operator=(const SafeArray& rhs)
 {
     if (this != &rhs){
-        this->Array::operator=(rhs);
+        this->Array::operator=((Array)rhs);
     }
 
     return *this;
