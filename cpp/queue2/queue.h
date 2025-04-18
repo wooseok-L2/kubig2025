@@ -2,7 +2,8 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
-// #define QUEUESIZE 100
+// #define QUEUE_SIZE 100
+// extern const int QUEUE_SIZE;
 
 class Queue{
 private:
@@ -11,7 +12,10 @@ private:
     int rear_;
     int front_;
     int size_;
-    static const int QUEUE_SIZE;
+    static const int QUEUE_SIZE;            // only use on class cpp
+
+    Queue(const Queue& );                   // 복사 연산자 중복 not use
+    Queue& operator=(const Queue& );        // 대입연산자 중복 not use
 
 public:
     explicit Queue(int size = QUEUE_SIZE);    // 생성자 만들기

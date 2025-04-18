@@ -38,7 +38,7 @@ bool Queue::isFull() const
 
 void Queue::push(int data)
 {  
-    assert(!this->isFull());
+    assert(!isFull());
     
     arr_[rear_] = data;
     ++rear_;
@@ -52,7 +52,7 @@ int Queue::pop()
 
     ++front_;
     
-    return this->arr_[i];
+    return arr_[i];
     
 }
 

@@ -8,7 +8,7 @@ const int Queue::QUEUE_SIZE = 100;
 Queue::Queue(int size)
 : front_(0), rear_(0), size_(size), parr_(new int[size])
 {
-    assert(this->parr_);       // 디버깅모드에서만 작동  assert(pq->parr != 0);   릴리즈 모드에서는 assert 함수 사라짐
+    assert(parr_);       // 디버깅모드에서만 작동  assert(pq->parr != 0);   릴리즈 모드에서는 assert 함수 사라짐
 }
 
 Queue::~Queue()
@@ -38,7 +38,7 @@ bool Queue::isFull() const
 
 void Queue::push(int data)
 {  
-    assert(!this->isFull());
+    assert(!isFull());
     
     parr_[rear_] = data;
     ++rear_;
@@ -52,7 +52,7 @@ int Queue::pop()
 
     ++front_;
     
-    return this->parr_[i];
+    return parr_[i];
     
 }
 

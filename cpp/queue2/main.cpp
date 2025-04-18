@@ -16,9 +16,12 @@ int main(void)
     std::cout << "q1 capacity : " << q1.size() << std::endl;
     std::cout << "q1 remain   : "  << q1.remain() << std::endl;
 
-    while (q1.isEmpty()){
-        std::cout << q1.pop() << std::endl;
+    int i = 0;
+    while (!q1.isEmpty()){
+        i++;
+        std::cout << "q1 pop() "<< i << ": " << q1.pop() << std::endl;
     }
+    i = 0;
     
     // q1.pop();
     

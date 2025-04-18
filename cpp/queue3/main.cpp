@@ -16,15 +16,18 @@ int main(void)
     std::cout << "q1 capacity : " << q1.size() << std::endl;
     std::cout << "q1 remain   : "  << q1.remain() << std::endl;
 
-    while (q1.isEmpty()){
-        std::cout << q1.pop() << std::endl;
+    int i = 0;
+    while (!q1.isEmpty()){
+        i++;
+        std::cout << "q1 pop() " << i << ": " << q1.pop() << std::endl;
     }
+    i = 0;
     
     // q1.pop();
     
-    q2.push(700);
-    q2.push(800);
     q2.push(900);
+    q2.push(800);
+    q2.push(700);
     
     // printf("q2 1st pop() : %d \n", q2.pop());
     std::cout << "q2 1st pop() : " << q2.pop() << std::endl;

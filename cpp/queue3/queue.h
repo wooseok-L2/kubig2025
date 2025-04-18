@@ -11,7 +11,7 @@ private:
     // int array[QUEUESIZE];
     // int *parr_;
     // int size_;
-    Array arr_;
+    Array arr_;      // has-a
     int rear_;
     int front_;
     static const int QUEUE_SIZE;
