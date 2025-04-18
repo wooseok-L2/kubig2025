@@ -38,7 +38,7 @@ public:
 };
 
 
-#include <assert.h>
+#include <cassert>
 
 template <typename T>
 const int Array<T>::ARRAY_SIZE = 100;       //특정 클래스와 관련된 전역변수
@@ -100,7 +100,7 @@ Array<T>& Array<T>::operator = (const Array<T>& rhs)
 }
 
 template <typename T>
-bool Array<T>::operator == (const Array<t>& rhs) const
+bool Array<T>::operator == (const Array<T>& rhs) const
 {
     if (size_ != rhs.size_){
         return false;
