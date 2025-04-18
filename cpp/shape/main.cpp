@@ -6,13 +6,16 @@
 
 void printShape(const Shape *ps)
 {
-    //std::cout << "area : " << ps->area() << std::endl;
     if (typeid(*ps) == typeid(Rectangle)){          // RTTI(RunTime Type Identification)
-        std::cout << "rectangle ";
+        const Rectangle *pr = (const Rectangle *)ps;
+        std::cout << "rectangle " << pr->getDiagonal() << "  ";
     }
     else if (typeid(*ps) == typeid(Circle)){
-        std::cout << "circle "; 
+        const Circle *pc = (const Circle *)ps;
+        std::cout << "circle " << pc->getCircumference() << "  ";
     }
+    
+    std::cout << "area : " << ps->area() << std::endl;
 }
 
 
