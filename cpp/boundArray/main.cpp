@@ -15,12 +15,12 @@ int main(){
     
     const BoundArray arr4 = arr1;
 
-    arr4 = arr1;
+    arr3 = arr1;
 
-    arr4 == arr1;
+    arr3 == arr1;
 
-    for (int i = arr4.lower(); i != arr4.upper(); i++){
-        std::cout << arr4[i] << std::endl;
+    for (int i = arr3.lower(); i != arr3.upper(); i++){
+        std::cout << arr3[i] << std::endl;
     }
 
     return 0;

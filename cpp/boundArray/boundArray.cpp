@@ -1,20 +1,25 @@
 #include "boundArray.h"
 #include <cassert>
 
-BoundArray::BoundArray(int end)
-: Array(end)
+BoundArray::BoundArray(int low, int upper)
+: SafeArray(upper - low), low_(low)
 {
     
 }
 
-BoundArray::BoundArray(int start, int end)
-: Array(end)
+BoundArray::BoundArray(int size)
+: SafeArray(size)
 {
     
 }
 
 BoundArray::BoundArray(const BoundArray& rhs)
-: Array((Array)rhs)     //slicing
+: SafeArray((SafeArray)rhs), low_(rhs.low_)     //slicing
+{
+
+}
+
+BoundArray::~BoundArray()
 {
 
 }
@@ -22,7 +27,8 @@ BoundArray::BoundArray(const BoundArray& rhs)
 BoundArray& BoundArray::operator=(const BoundArray& rhs)
 {
     if (this != &rhs){
-        this->Array::operator=(rhs);
+        this->SafeArray::operator=((SafeArray)rhs);
+        low_ = rhs.low_;
     }
 
     return *this;
@@ -30,27 +36,25 @@ BoundArray& BoundArray::operator=(const BoundArray& rhs)
 
 bool BoundArray::operator==(const BoundArray& rhs) const 
 {
-    return this->Array::operator==((Array)rhs);
+    return low_ == rhs.low_ && this->SafeArray::operator == ((SafeArray)rhs);
+}
+
+int BoundArray::upper()
+{
+    return low_ + this->SafeArray::size_;
 }
 
 int& BoundArray::operator[](int index)
 {
-    assert(index >= 0 && index < this->Array::size());
-    return this->Array::operator[](index);
+    return this->SafeArray::operator[] (index - low_);
 }
 
 const int& BoundArray::operator[](int index) const
 {
-    assert(index >= 0 && index < this->Array::size());
-    return this->Array::operator[](index);
+    return this->SafeArray::operator[] (index - low_);
 }
 
-BoundArray::upper()
+int BoundArray::lower()
 {
-
-}
-
-BoundArray::Lower()
-{
-
+    return low_;
 }
