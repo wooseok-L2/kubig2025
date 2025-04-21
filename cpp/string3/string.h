@@ -2,14 +2,14 @@
 #define STRING_H
 
 #include <iostream>
-#include "stringRep.h"
+//#include "stringRep.h"
 
 class String{
 friend std::ostream& operator << (std::ostream& out, String& rhs);
 private:
-    // char *str_;
-    // int len_;
-    StringRep *pRep;
+    char *str_;
+    int len_;
+    //StringRep *pRep;
 
 public:
     String();

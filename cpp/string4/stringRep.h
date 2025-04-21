@@ -13,7 +13,7 @@ private:
 
     StringRep();
     StringRep(const char* s);
-    // tringRep(const StringRep& rhs);
+    // stringRep(const StringRep& rhs);
     ~StringRep();
 public:
 };

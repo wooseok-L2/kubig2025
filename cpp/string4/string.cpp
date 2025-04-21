@@ -22,16 +22,16 @@ String::String(const char *s)
 
 String::~String()
 {
-    --pRep_ -> rc;
-    if ([pRep_->rc == 0]){
+    --pRep_->rc;
+    if (pRep_->rc == 0){
 
-        delete pRep;
+        delete pRep_;
     }
 }
 
 String::String(const String& rhs)
 {
-    pRep = rhs.pRep;
+    pRep_ = rhs.pRep_;
     ++pRep_->rc;
 }
 
@@ -39,11 +39,10 @@ String& String::operator = (const String& rhs)
 {
     if (this != &rhs) {    // 주소가 같은지 비교
         --pRep_->rc;
-        if ([pRep->rc == 0]){
-    
-            delete pRep;
+        if (pRep_->rc == 0){
+            delete pRep_;
         }
-        pRep = rhs.pRep;
+        pRep_ = rhs.pRep_;
         ++pRep_->rc;
     }
 
@@ -59,7 +58,7 @@ const String String::operator + (const String& rhs) const
 {
     char buf[strlen(pRep_->str_) + strlen(rhs.pRep_->str_) + 1];
     strcpy(buf, pRep_->str_);
-    strcat(buf, rhs.str_);
+    strcat(buf, rhs.pRep_->str_);
 
     String result(buf);
     return result;
@@ -67,10 +66,10 @@ const String String::operator + (const String& rhs) const
 
 const char* String::c_str() const
 {
-    return pRep->str_;
+    return pRep_->str_;
 }
 
 int String::size() const
 {
-    return pRep->len_;
+    return pRep_->len_;
 }

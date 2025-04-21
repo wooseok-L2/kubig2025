@@ -1,5 +1,6 @@
 #include "stringRep.h"
 #include <cassert>
+#include <cstring>
 
 StringRep::StringRep()
 : str_(new char [1]), len_(0)
@@ -19,5 +20,5 @@ StringRep::StringRep(const char *str)
 
 StringRep::~StringRep()
 {
-    delete[] str;
+    delete[] str_;
 }

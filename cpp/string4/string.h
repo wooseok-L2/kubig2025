@@ -9,13 +9,13 @@ friend std::ostream& operator << (std::ostream& out, String& rhs);
 private:
     // char *str_;
     // int len_;
-    StringRep *pRep;
+    StringRep *pRep_;
 
 public:
     String();
     String(const char *s);
     String(const String& rhs);
-    //~String() {delete [] str_;};
+    ~String(); // {delete [] pRep_ ;};
 
     String& operator = (const String& rhs);
 
