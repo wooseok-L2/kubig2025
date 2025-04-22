@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.00)
 project(part2)
 
-set(CMAKE_C_COMPILER "/usr/bin/gcc")
+# set(CMAKE_C_COMPILER "/usr/bin/gcc")
 
-set(CMAKE_C_STANDARD 99)
-set(CMAKE_C_STANDARD_REQUIRED ON)
+# set(CMAKE_C_STANDARD 99)
+# set(CMAKE_C_STANDARD_REQUIRED ON)
 
 # set(EXECUTABLES)
 
