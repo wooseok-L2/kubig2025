@@ -1,4 +1,4 @@
-//#include <execution>
+#include <execution>
 #include <iostream>
 #include <vector>
 #include <numeric>
@@ -24,8 +24,8 @@ int main()
     shuffle(vec.begin(), vec.end(), mt19937(random_device{}()));
 
     auto start = chrono::high_resolution_clock::now();
-    //sort(execution::par, vec.begin(), vec.end());
-    sort(vec.begin(), vec.end());
+    sort(execution::par, vec.begin(), vec.end());
+    //sort(vec.begin(), vec.end());
     auto end = chrono::high_resolution_clock::now();
 
     cout << "spend time : " << chrono::duration_cast<chrono::milliseconds>(end - start).count() << "ms" <<endl;
