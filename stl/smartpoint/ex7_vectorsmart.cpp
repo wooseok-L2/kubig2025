@@ -9,8 +9,6 @@ class Data
 public:
     int value;
     Data(int v) : value(v) {}
-
-
 };
 
 int main()
