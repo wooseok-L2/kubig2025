@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.00)
-project(KuBig2025_STL)
+project(network)
 
 # set(CMAKE_CXX_STANDARD 17)
 # set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -13,7 +13,7 @@ project(KuBig2025_STL)
 # set(EXECUTABLES)
 
 # 모든 폴더 자동 감지
-file(GLOB SUBDIRS RELATIVE "${CMAKE_CURRENT_LIST_DIR}" "${CMAKE_CURRENT_LIST_DIR}/*.cpp")
+file(GLOB SUBDIRS RELATIVE "${CMAKE_CURRENT_LIST_DIR}" "${CMAKE_CURRENT_LIST_DIR}/*.c")
 set(SUBDIRS_FILTERED "")
 foreach(SUBDIR ${SUBDIRS})
     if(IS_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/${SUBDIR}")
@@ -25,11 +25,11 @@ set(SUBDIRS ${SUBDIRS_FILTERED})
 # 각 서브디렉토리의 main.cpp 파일을 찾아서 실행 파일 생성
 
 foreach(SUBDIR ${SUBDIRS})
-    file(GLOB EXECUTABLES "${SUBDIR}/main.cpp")
+    file(GLOB EXECUTABLES "${SUBDIR}/main.c")
     foreach(EXECUTABLE ${EXECUTABLES})
         get_filename_component(EXECUTABLE_NAME ${SUBDIR} NAME_WE)
         get_filename_component(EXECUTABLE_DIR ${EXECUTABLE} DIRECTORY)
-        file(GLOB_RECURSE SOURCES "${EXECUTABLE_DIR}/*.cpp")
+        file(GLOB_RECURSE SOURCES "${EXECUTABLE_DIR}/*.c")
         add_executable(${EXECUTABLE_NAME} ${SOURCES})
     endforeach()
 endforeach()
