@@ -8,7 +8,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 void error_handling(char *message);
-int calculate(int opnum, int opnds[], char op);
+int calculate(int opnum, int *opnds, char op);
 
 #define BUF_SIZE 1024
 
@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 
     int opnd_cnt = 0;
     int recv_len = 0, recv_cnt;
-    int opinfo[300];
+    char opinfo[BUF_SIZE];
     int result;
 
     for (int i = 0; i < 20; ++i)
@@ -83,7 +83,7 @@ void error_handling(char *message)
     exit(1);
 }
 
-int calculate(int opnum, int opnds[], char op)
+int calculate(int opnum, int *opnds, char op)
 {
     int result = opnds[0], i;
     switch (op)
