@@ -17,7 +17,9 @@
         "interrupt.h": "c",
         "uart0.h": "c",
         "lcd.h": "c",
-        "serial.h": "c"
+        "serial.h": "c",
+        "unistd.h": "c",
+        "stdlib.h": "c"
     },
 
     "ros.distro": "humble",
