@@ -1,53 +1,27 @@
-//
-// !!! WARNING !!! AUTO-GENERATED FILE!
-// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
-// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
-//
 {
     "configurations": [
         {
-            "name": "PlatformIO",
+            "name": "Linux",
             "includePath": [
-                "/home/lws/kulws2025/kubig2025/src",
-                "/home/lws/kulws2025/kubig2025/lib/uart0",
-                "/home/lws/kulws2025/kubig2025/lib/lcd",
-                "/home/lws/kulws2025/kubig2025/lib/pthread",
-                "/home/lws/kulws2025/kubig2025/lib/serial",
-                "/home/lws/kulws2025/kubig2025/lib/farmsql",
-                "/home/lws/kulws2025/kubig2025/lib/sht20",
-                "/home/lws/kulws2025/kubig2025/lib/at25",
-                "/home/lws/kulws2025/kubig2025/lib/avr-uart",
-                ""
+                "${workspaceFolder}/**",
+                "/usr/include/**"
+                // "/lib/modules/6.6.51+rpt-rpi-v8/source/include",
+                // "/usr/src/linux-headers-6.6.51+rpt-rpi-v8//arch/arm64/include/generated",
+                // "/usr/src/linux-headers-6.6.51+rpt-rpi-v8//include",
+                // "/usr/src/linux-headers-6.6.51+rpt-common-rpi/arch/arm64/include"
             ],
-            "browse": {
-                "limitSymbolsToIncludedHeaders": true,
-                "path": [
-                    "/home/lws/kulws2025/kubig2025/src",
-                    "/home/lws/kulws2025/kubig2025/lib/uart0",
-                    "/home/lws/kulws2025/kubig2025/lib/lcd",
-                    "/home/lws/kulws2025/kubig2025/lib/pthread",
-                    "/home/lws/kulws2025/kubig2025/lib/serial",
-                    "/home/lws/kulws2025/kubig2025/lib/farmsql",
-                    "/home/lws/kulws2025/kubig2025/lib/sht20",
-                    "/home/lws/kulws2025/kubig2025/lib/at25",
-                    "/home/lws/kulws2025/kubig2025/lib/avr-uart",
-                    ""
-                ]
-            },
             "defines": [
-                "F_CPU=16000000L",
-                "PLATFORMIO=60118",
-                "ARDUINO_AVR_ATmega128",
-                "__AVR_ATmega128__",
-                ""
+                "__KERNEL__",
+                "__USE_POSIX",
+                "__USE_GNU",
+                "MODULE",
+                "_POSIX_C_SOURCE=200809L", // POSIX.1-2008 표준 활성화
+                "_GNU_SOURCE" // GNU 확장 활성화
             ],
-            "cStandard": "gnu11",
-            "cppStandard": "gnu++11",
-            "compilerPath": "/home/lws/.platformio/packages/toolchain-atmelavr/bin/avr-gcc",
-            "compilerArgs": [
-                "-mmcu=atmega128",
-                ""
-            ]
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c17",
+            "cppStandard": "c++23",
+            "intelliSenseMode": "linux-gcc-x64"
         }
     ],
     "version": 4
