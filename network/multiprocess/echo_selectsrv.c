@@ -9,13 +9,14 @@
 #include <sys/socket.h>
 #include <sys/time.h>
 #include <unistd.h>
-
-typedef struct{
+typedef struct
+{
     int sockfd;
-    struct sockaddr_in 
-}ClientInfo;
+    struct sockaddr_in addr;
+} ClientInfo;
 
 #define BUF_SIZE 100
+#define MAX_CLIENTS 20
 void error_handling(char *message);
 
 int main(int argc, char *argv[])
@@ -29,6 +30,8 @@ int main(int argc, char *argv[])
     struct timeval timeout;
     socklen_t clnt_addr_size;
 
+    ClientInfo clients[MAX_CLIENTS] = {0};
+    int client_count = 0;
     if (argc != 2)
     {
         printf("사용법: %s <port>\n", argv[0]);
@@ -82,7 +85,13 @@ int main(int argc, char *argv[])
                         FD_SET(clnt_sock, &reads);
                         if (fd_max < clnt_sock)
                             fd_max = clnt_sock;
-                        printf("Conneted client : %s \n", inet_ntoa(clnt_addr.sin_addr));
+                        if (client_count < MAX_CLIENTS)
+                        {
+                            clients[client_count].sockfd = clnt_sock;
+                            clients[client_count].addr = clnt_addr;
+                            client_count++;
+                        }
+                        printf("%d 번째 클라이언트 IP : %s \n", client_count, inet_ntoa(clnt_addr.sin_addr));
                     }
                 }
                 else // 이미 만들어진 클라이언트
@@ -92,14 +101,30 @@ int main(int argc, char *argv[])
                     {
                         FD_CLR(i, &reads);
                         close(i);
-                        printf("client 연결 종료... \n");
+                        for (int j = 0; j < client_count; ++j)
+                        {
+                            if (clients[j].sockfd == i)
+                            {
+                                printf("client 연결 종료... %s \n", inet_ntoa(clients[j].addr.sin_addr));
+                                clients[j] = clients[client_count - 1];
+                                // 빠진 클라언트 배열의 자리에 맨끝 클라이언트를 이동.
+                                client_count--;
+                                break;
+                            }
+                        }
                     }
                     else
                     {
                         buf[str_len] = '\0'; // 널 문자 추가
-                        printf("%s : ", inet_ntoa(clnt_addr.sin_addr));
-                        puts(buf);
-                        write(i, buf, str_len);
+                        for (int j = 0; j < client_count; ++j)
+                        {
+                            if (clients[j].sockfd == i)
+                            {
+                                printf("%s : ", inet_ntoa(clients[j].addr.sin_addr));
+                                puts(buf);
+                                write(i, buf, str_len);
+                            }
+                        }
                     }
                 }
             }
