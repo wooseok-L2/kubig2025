@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     pthread_create(&snd_thread, NULL, (void *)send_msg, (void *)&sock);
     pthread_create(&rcv_thread, NULL, (void *)recv_msg, (void *)&sock);
     pthread_join(snd_thread, &thread_return);
-    pthread_join(rcv_thread, &thread_return);
+    // pthread_join(rcv_thread, &thread_return); // recv_msg() 가 끝나지 않는다.
 
     close(sock);
 
@@ -71,6 +71,7 @@ void send_msg(void *arg)
         sprintf(name_msg, "%s %s", name, msg); // 네임 변수 합침
         write(fd, name_msg, strlen(name_msg));
     }
+    printf("end of sendmsg()\n");
 }
 void recv_msg(void *arg)
 {
@@ -88,6 +89,7 @@ void recv_msg(void *arg)
         name_msg[str_len] = '\0';
         printf("%s\n", name_msg);
     }
+    printf("end of recv_msg\n");
 }
 
 void error_handling(char *message)
