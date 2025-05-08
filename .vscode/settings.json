@@ -19,7 +19,8 @@
         "lcd.h": "c",
         "serial.h": "c",
         "unistd.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "typeinfo": "c"
     },
 
     "ros.distro": "humble",

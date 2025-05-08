@@ -4,7 +4,8 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/usr/include/**"
+                "/usr/include/**",
+                "/usr/include/python3.10/**"
                 // "/lib/modules/6.6.51+rpt-rpi-v8/source/include",
                 // "/usr/src/linux-headers-6.6.51+rpt-rpi-v8//arch/arm64/include/generated",
                 // "/usr/src/linux-headers-6.6.51+rpt-rpi-v8//include",
