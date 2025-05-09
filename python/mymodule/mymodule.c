@@ -1,3 +1,4 @@
+// gcc -shared -fPIC -o mymodule.cpython-310-x86_64-linux-gnu.so mymodule.c -I/usr/include/python3.10 -lpython3.10
 #define PY_SSYZE_T_CLEAN
 #include <Python.h>
 
@@ -49,7 +50,8 @@ static PyMethodDef Hello_methods[] = {
     {NULL}};
 
 static PyTypeObject HelloType = {
-    PyVarObject_HEAD_INIT(NULL, 0).tp_name = "mymodule.hello",
+    PyVarObject_HEAD_INIT(NULL, 0)
+        .tp_name = "mymodule.hello",
     .tp_basicsize = sizeof(HelloObject),
     .tp_itemsize = 0,
     .tp_flags = Py_TPFLAGS_DEFAULT,
@@ -60,11 +62,25 @@ static PyTypeObject HelloType = {
     .tp_methods = Hello_methods,
 };
 
+// print_hello 함수 정의
+static PyObject *print_hello(PyObject *self, PyObject *args)
+{
+    printf("Hello from C extension!\n");
+    Py_RETURN_NONE;
+}
+
+// 모듈에 포함될 함수 목록
+static PyMethodDef MyModuleMethods[] = {
+    {"print_hello", print_hello, METH_NOARGS, "Prints a hello message."},
+    {NULL, NULL, 0, NULL} // Sentinel
+};
+
 static PyModuleDef mymodule = {
     PyModuleDef_HEAD_INIT,
     .m_name = "mymodule",
     .m_doc = "C type module example",
     .m_size = -1,
+    .m_methods = MyModuleMethods,
 };
 
 PyMODINIT_FUNC PyInit_mymodule(void)
