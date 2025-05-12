@@ -1,0 +1,14 @@
+[project]
+name = "uv-test"
+version = "0.1.0"
+description = "UV Test"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+test_package_main = "test_package.main:main"
+
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
