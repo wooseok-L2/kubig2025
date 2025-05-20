@@ -9,12 +9,12 @@ CREATE TABLE parking_log (
     entry_time DATETIME NOT NULL,      -- 입차 시간
     exit_time DATETIME DEFAULT NULL,   -- 출차 시간 (출차 전에는 NULL)
     total_usage_time TIME DEFAULT NULL, -- 총 이용 시간 (분 단위, 출차 후 계산)
-    current_status ENUM('입차', '출차') NOT NULL  -- 현재 상태 ('입차' 또는 '출차')
+    current_status ENUM('In', 'Out') NOT NULL  -- 현재 상태 ('입차' 또는 '출차')
 );
 
 CREATE TABLE parking_slots (
     slot_number VARCHAR(5) NOT NULL PRIMARY KEY, -- 주차칸 번호 (예: A1, B2)
-    status ENUM('사용 중', '비어 있음') NOT NULL DEFAULT '비어 있음', -- 현재 상태
+    status ENUM('Occupied', 'Empty') NOT NULL DEFAULT 'Empty', -- 현재 상태
     entry_time DATETIME DEFAULT NULL, -- 입차 시간
     exit_time DATETIME DEFAULT NULL -- 출차 시간
 );
@@ -23,38 +23,38 @@ CREATE TABLE parking_slots (
 use parking_db;
 -- 입차 시 INSERT (새로운 행 추가)
 INSERT INTO parking_log (RFID_num, entry_time, current_status)
-VALUES ('1234567890', NOW(), '입차');
+VALUES ('1234567890', NOW(), 'Empty');
 -- 출차 시 UPDATE (기존 행 수정)
 UPDATE parking_log 
 SET exit_time = NOW(), 
     total_usage_time = SEC_TO_TIME(TIMESTAMPDIFF(SECOND, entry_time, NOW())), 
-    current_status = '출차'
-WHERE RFID_num = '1234567890' AND current_status = '입차';
+    current_status = 'Out'
+WHERE RFID_num = '1234567890' AND current_status = 'In';
 
 use parking_db;
 INSERT INTO parking_log (RFID_num, entry_time, current_status)
-VALUES ('3456789012', NOW(), '입차');
+VALUES ('3456789012', NOW(), 'In');
 
 use parking_db;
 UPDATE parking_log 
 SET exit_time = NOW(), 
     total_usage_time = SEC_TO_TIME(TIMESTAMPDIFF(SECOND, entry_time, NOW())), 
-    current_status = '출차'
-WHERE RFID_num = '3456789012' AND current_status = '입차';
+    current_status = 'Out'
+WHERE RFID_num = '3456789012' AND current_status = 'In';
 
 -- 샘플 데이터 삽입 (테스트용)
 use parking_db;
--- 입차 시 INSERT (새로운 행 추가)
-INSERT INTO parking_slots (slot_number, status, entry_time)
-VALUES ('A1', '사용 중', NOW());
+INSERT INTO parking_slots (slot_number, status) 
+VALUES ('A1', 'Empty'), ('A2', 'Empty'), ('A3', 'Empty');
+-- 입차 시 update (기존 행 수정)
+UPDATE parking_slots 
+SET status = 'Occupied', entry_time = NOW(), exit_time = NULL 
+WHERE slot_number = 'A1';
 -- 출차 시 UPDATE (기존 행 수정)
 UPDATE parking_slots 
-SET status = '비어 있음', exit_time = NOW()
+SET status = 'Empty', exit_time = NOW() 
 WHERE slot_number = 'A1';
 
-use parking_db;
-INSERT INTO parking_slots (slot_number, status, entry_time)
-VALUES ('A3', '사용 중', NOW());
 
 use parking_db;
 ALTER TABLE parking_log

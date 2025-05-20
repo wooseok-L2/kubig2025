@@ -1,21 +1,21 @@
-import mysql.connector
+import pymysql
 
 def sql_connect():
     try:
         # (1) MYSQL 연결 
-        conn = mysql.connector.connect(
-            host = 'localhost',
-            database = 'parking_db',  
-            user = 'myuser',
-            password = '0000'   
+        conn = pymysql.connect(
+            host='localhost',
+            user='root',
+            password='0000',
+            database='parking_db',
+            charset='utf8mb4'
+
         )
 
-        if conn.is_connected():
-            db_info = conn.get_server_info()
+        # print('MariaDB 연결 성공')
 
-
-    except ImportError as e:
-        print('Database Error: ',e) 
+    except pymysql.MySQLError as e:
+        print('Database Error: ', e)
 
     # finally:
     #     # (5) 데이터베이스 커서와 커넥션을 모두 닫음 
@@ -24,6 +24,8 @@ def sql_connect():
     #     print('MySQL Connection Close')
     
     return conn
+
+# sql_connect()
 
 # # 테이블 생성
 # cursor.execute("""
