@@ -5,56 +5,75 @@ grant all privileges on parking_db.* to 'myuser' @'%';
 -- 데이터베이스 선택
 USE parking_db;
 CREATE TABLE parking_log (
-    RFID_num VARCHAR(20) PRIMARY KEY,  -- RFID 번호 (고유 ID)
+    entry_id INT AUTO_INCREMENT PRIMARY KEY,
+    RFID_num VARCHAR(20) NOT NULL,  -- RFID 번호 (고유 ID)
     entry_time DATETIME NOT NULL,      -- 입차 시간
     exit_time DATETIME DEFAULT NULL,   -- 출차 시간 (출차 전에는 NULL)
     total_usage_time TIME DEFAULT NULL, -- 총 이용 시간 (분 단위, 출차 후 계산)
-    current_status ENUM('In', 'Out') NOT NULL  -- 현재 상태 ('입차' 또는 '출차')
+    current_status ENUM('입차', '출차') NOT NULL  -- 현재 상태 ('입차' 또는 '출차')
 );
 
 CREATE TABLE parking_slots (
     slot_number VARCHAR(5) NOT NULL PRIMARY KEY, -- 주차칸 번호 (예: A1, B2)
-    status ENUM('Occupied', 'Empty') NOT NULL DEFAULT 'Empty', -- 현재 상태
+    status ENUM('사용 중', '비어 있음') NOT NULL DEFAULT '비어 있음', -- 현재 상태
     entry_time DATETIME DEFAULT NULL, -- 입차 시간
     exit_time DATETIME DEFAULT NULL -- 출차 시간
 );
+
+CREATE TABLE rc_stop (
+    stop_id INT AUTO_INCREMENT PRIMARY KEY, 
+    status ENUM('moving', 'stop') NOT NULL DEFAULT 'moving', 
+    move_time DATETIME DEFAULT NULL 
+    stop_time DATETIME DEFAULT NULL 
+);
+
+use parking_db;
+INSERT INTO rc_stop (status, stop_time)
+VALUES ('stop', NOW());
 
 -- 샘플 데이터 삽입 (테스트용)
 use parking_db;
 -- 입차 시 INSERT (새로운 행 추가)
 INSERT INTO parking_log (RFID_num, entry_time, current_status)
-VALUES ('1234567890', NOW(), 'Empty');
+VALUES ('1234567890', NOW(), '입차');
+
+INSERT INTO parking_log (RFID_num, entry_time, current_status)
+SELECT '1234567890', NOW(), '입차'
+WHERE NOT EXISTS (
+    SELECT 1 FROM parking_log WHERE RFID_num = '1234567890' AND current_status = '입차'
+);
+
 -- 출차 시 UPDATE (기존 행 수정)
 UPDATE parking_log 
 SET exit_time = NOW(), 
     total_usage_time = SEC_TO_TIME(TIMESTAMPDIFF(SECOND, entry_time, NOW())), 
-    current_status = 'Out'
-WHERE RFID_num = '1234567890' AND current_status = 'In';
+    current_status = '출차'
+WHERE RFID_num = '1234567890' AND current_status = '입차';
 
 use parking_db;
 INSERT INTO parking_log (RFID_num, entry_time, current_status)
-VALUES ('3456789012', NOW(), 'In');
+VALUES ('3456789012', NOW(), '입차');
 
 use parking_db;
 UPDATE parking_log 
 SET exit_time = NOW(), 
     total_usage_time = SEC_TO_TIME(TIMESTAMPDIFF(SECOND, entry_time, NOW())), 
-    current_status = 'Out'
-WHERE RFID_num = '3456789012' AND current_status = 'In';
+    current_status = '출차'
+WHERE RFID_num = '3456789012' AND current_status = '입차';
 
 -- 샘플 데이터 삽입 (테스트용)
 use parking_db;
-INSERT INTO parking_slots (slot_number, status) 
-VALUES ('A1', 'Empty'), ('A2', 'Empty'), ('A3', 'Empty');
--- 입차 시 update (기존 행 수정)
-UPDATE parking_slots 
-SET status = 'Occupied', entry_time = NOW(), exit_time = NULL 
-WHERE slot_number = 'A1';
+-- 입차 시 INSERT (새로운 행 추가)
+INSERT INTO parking_slots (slot_number, status, entry_time)
+VALUES ('A1', '사용 중', NOW());
 -- 출차 시 UPDATE (기존 행 수정)
 UPDATE parking_slots 
-SET status = 'Empty', exit_time = NOW() 
+SET status = '비어 있음', exit_time = NOW()
 WHERE slot_number = 'A1';
 
+use parking_db;
+INSERT INTO parking_slots (slot_number, status, entry_time)
+VALUES ('A3', '사용 중', NOW());
 
 use parking_db;
 ALTER TABLE parking_log

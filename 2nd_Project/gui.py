@@ -27,6 +27,35 @@ for i in range(3):
     text = canvas.create_text(x + 50, 100, text="Empty", font=("DejaVu Sans", 14), fill="black")
     parking_texts.append(text)
 
+stop = canvas.create_rectangle(50, 40, 100, 90, outline="black", width=3)   # RC status
+text2 = canvas.create_text(x + 50, 100, text="Empty", font=("DejaVu Sans", 14), fill="black")
+
+def update_rc():
+    try:
+        conn = sql.sql_connect()
+        cursor = conn.cursor()
+        cursor.execute("SELECT status FROM rc_stop")
+        data = cursor.fetchall()
+        #conn.close()
+
+        # 상태 변경
+        for row in data:
+            status = row[0]
+            if status == "stop":
+                canvas.itemconfig(stop, fill="red")  # 차량 stop 시 빨간색
+                canvas.itemconfig(text2, text="Stop", fill="black")  # 텍스트도 빨간색으로 변경
+            else:
+                canvas.itemconfig(stop, fill="white")  # 차량 move 때 흰색
+                canvas.itemconfig(text2, text="Moving", fill="black")  # 텍스트를 검은색으로 변경
+    
+    except Exception as e:
+        print(f"오류 발생: {e}")  # 오류 발생 시 출력
+        
+    finally:
+        cursor.close()
+        conn.close()
+
+    root.after(1000, update_rc)
 
 def update_parking():
     try:
@@ -60,9 +89,10 @@ def update_parking():
     root.after(1000, update_parking)
 
 ### SQL 데이터 표시 (아래쪽 영역) ###
-tree = ttk.Treeview(main_frame, columns=("RFID_num", "entry_time", "exit_time", "total_usage_time", "current_status"), show="headings")
+tree = ttk.Treeview(main_frame, columns=("entry_id", "RFID_num", "entry_time", "exit_time", "total_usage_time", "current_status"), show="headings")
 
 # 테이블 헤더 설정
+tree.heading("entry_id", text="ID")
 tree.heading("RFID_num", text="RFID Num")
 tree.heading("entry_time", text="Entry Time")
 tree.heading("exit_time", text="Exit Time")
@@ -70,11 +100,12 @@ tree.heading("total_usage_time", text="Total Usage Time")
 tree.heading("current_status", text="Current Status")
 
 # 각 열의 너비 조정
+tree.column("entry_id", width=50)
 tree.column("RFID_num", width=100)
 tree.column("entry_time", width=190)
 tree.column("exit_time", width=190)
 tree.column("total_usage_time", width=120)
-tree.column("current_status", width=100)
+tree.column("current_status", width=50)
 
 tree.pack(fill="both", expand=True, side="bottom")
 
