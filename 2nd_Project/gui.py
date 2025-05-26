@@ -28,7 +28,7 @@ for i in range(3):
     parking_texts.append(text)
 
 stop = canvas.create_rectangle(50, 40, 100, 90, outline="black", width=3)   # RC status
-text2 = canvas.create_text(x + 50, 100, text="Empty", font=("DejaVu Sans", 14), fill="black")
+text2 = canvas.create_text(50, 20, text="Empty", font=("DejaVu Sans", 14), fill="black")
 
 def update_rc():
     try:
