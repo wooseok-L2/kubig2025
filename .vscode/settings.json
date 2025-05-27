@@ -87,5 +87,5 @@
 
     "ros.distro": "humble",
     "C_Cpp.errorSquiggles": "disabled",
-    "cmake.sourceDirectory": "/home/lws/kulws2025/kubig2025/cpp"
+    "cmake.sourceDirectory": "/home/lws/kulws2025/kubig2025"
 }
