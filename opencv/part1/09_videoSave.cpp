@@ -13,19 +13,27 @@ int main()
     if (!cap.isOpened()){
         cerr << "no vedio file" << endl;
     }
-    cout << "Frame width : " << cvRound(cap.get(CAP_PROP_FRAME_WIDTH)) << endl;
-    cout << "Frame height : " << cvRound(cap.get(CAP_PROP_FRAME_HEIGHT)) << endl;
+    int w = cvRound(cap.get(CAP_PROP_FRAME_WIDTH));
+    int h = cvRound(cap.get(CAP_PROP_FRAME_HEIGHT));
     auto fps = cap.get(CAP_PROP_FPS);
-    cout << "fps : " << cvRound(fps) << endl;
+    int fourcc = VideoWriter::fourcc('D', 'I', 'V', 'X');
+
+    VideoWriter outputVideo(folderPath + "inverse_vtest.avi", fourcc, fps, Size(w, h));
+    if (!outputVideo.isOpened()){
+        cerr << "fail to file producing" << endl;
+        return -1;
+    }
 
     Mat frame;
 
     while(true)
     {
         cap >> frame;
+        frame = ~frame;     // color reverse
         if(frame.empty())
             break;   // quit after last frame
 
+        outputVideo << frame;
         imshow("frame", frame);
 
         if (waitKey(1000 / fps) == 27)   // 27 is ESC
@@ -33,6 +41,7 @@ int main()
     }
 
     cap.release();
+    outputVideo.release();
     destroyAllWindows();
 
     return 0;
