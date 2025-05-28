@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.0)
-project(01_hello)
-
+project(OpenCV_part1)
 
 find_package(OpenCV REQUIRED)
 
-add_executable(hello 01_helloWorld.cpp)
-target_link_libraries(hello ${OpenCV_LIBS})
+file(GLOB SOURCES "*.cpp")
 
-add_executable(basic_op 02_basicOp.cpp)
-target_link_libraries(basic_op ${OpenCV_LIBS})
-
+foreach(SOURCE ${SOURCES})
+    get_filename_component(EXE_NAME ${SOURCE} NAME_WE)
+    add_executable(${EXE_NAME} ${SOURCE})
+    target_link_libraries(${EXE_NAME} ${OpenCV_LIBS})
+endforeach()
