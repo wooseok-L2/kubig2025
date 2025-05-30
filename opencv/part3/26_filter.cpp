@@ -9,7 +9,7 @@ String folderPath = "/home/lws/kulws2025/kubig2025/opencv/data/";
 
 int main()
 {
-     VideoCapture cap(0);
+    VideoCapture cap(0);
     if (!cap.isOpened())
     {
         cerr << "동영상 파일이 없습니다!" << endl;

@@ -22,7 +22,10 @@ int main()
     {
         for (int j = 0; j < 10; j++)
         {
-            img.at<uint8_t>(220 + i, 120 + j) = (255, 255, 255);
+            auto &pixel = img.at<Vec3b>(120 + i, 220 + j);
+            pixel[0] = 255;
+            pixel[1] = 255;
+            pixel[2] = 255;
         }
     }
 

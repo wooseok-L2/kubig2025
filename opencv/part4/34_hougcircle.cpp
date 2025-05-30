@@ -12,7 +12,7 @@ String folderPath = "/home/lws/kulws2025/kubig2025/opencv/data/";
 
 int main()
 {
-     Mat img = imread(folderPath + "coins.png");
+    Mat img = imread(folderPath + "coins.png");
     vector<Mat> images;
 
     Mat blurred;

@@ -12,7 +12,7 @@ String folderPath = "/home/lws/kulws2025/kubig2025/opencv/data/";
 
 int main()
 {
-   VideoCapture cap(0);
+    VideoCapture cap(0);
     Mat img, edge;
     int low_v, high_v, h_thresh;
     namedWindow("img1");
