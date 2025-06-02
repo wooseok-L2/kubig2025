@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(OpenCV_part4)
+project(OpenCV_part5)
 
 find_package(OpenCV REQUIRED)
 
