@@ -1,12 +1,12 @@
-#include <opencv2/aruco.hpp>
 #include </home/lws/kulws2025/kubig2025/opencv/part2/color.hpp>
 #include <iostream>
-#include <opencv2/freetype.hpp>
+#include <opencv2/ml.hpp>
 #include <opencv2/opencv.hpp>
 #include <vector>
 
-using namespace cv;
 using namespace std;
+using namespace cv;
+using namespace cv::ml;
 
 String folderPath = "/home/lws/kulws2025/kubig2025/opencv/data/";
 
