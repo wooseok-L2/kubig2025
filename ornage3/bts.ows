@@ -4,13 +4,14 @@
 		<node id="0" name="Corpus" qualified_name="orangecontrib.text.widgets.owcorpus.OWCorpus" project_name="Orange3-Text" version="" title="Corpus" position="(90.0, 237.0)" />
 		<node id="1" name="Corpus Viewer" qualified_name="orangecontrib.text.widgets.owcorpusviewer.OWCorpusViewer" project_name="Orange3-Text" version="" title="Corpus Viewer" position="(235.0, 71.0)" />
 		<node id="2" name="Preprocess Text" qualified_name="orangecontrib.text.widgets.owpreprocess.OWPreprocess" project_name="Orange3-Text" version="" title="Preprocess Text" position="(233.0, 237.0)" />
-		<node id="3" name="Word Cloud" qualified_name="orangecontrib.text.widgets.owwordcloud.OWWordCloud" project_name="Orange3-Text" version="" title="Word Cloud" position="(391.0, 238.0)" />
+		<node id="3" name="Word Cloud" qualified_name="orangecontrib.text.widgets.owwordcloud.OWWordCloud" project_name="Orange3-Text" version="" title="Word Cloud" position="(399.0, 244.0)" />
 		<node id="4" name="Data Table" qualified_name="Orange.widgets.data.owtable.OWTable" project_name="Orange3" version="" title="Data Table" position="(376.0, 373.0)" />
 		<node id="5" name="Sentiment Analysis" qualified_name="orangecontrib.text.widgets.owsentimentanalysis.OWSentimentAnalysis" project_name="Orange3-Text" version="" title="Sentiment Analysis" position="(234.0, 430.0)" />
 		<node id="6" name="Select Columns" qualified_name="Orange.widgets.data.owselectcolumns.OWSelectAttributes" project_name="Orange3" version="" title="Select Columns" position="(373.0, 481.0)" />
 		<node id="7" name="Distributions" qualified_name="Orange.widgets.visualize.owdistributions.OWDistributions" project_name="Orange3" version="" title="Distributions" position="(539.0, 574.0)" />
 		<node id="8" name="Box Plot" qualified_name="Orange.widgets.visualize.owboxplot.OWBoxPlot" project_name="Orange3" version="" title="Box Plot" position="(537.0, 474.0)" />
 		<node id="9" name="Datasets" qualified_name="Orange.widgets.data.owdatasets.OWDataSets" project_name="Orange3" version="" title="Datasets" position="(687.0, 474.0)" />
+		<node id="10" name="Word Enrichment" qualified_name="orangecontrib.text.widgets.owwordenrichment.OWWordEnrichment" project_name="Orange3-Text" version="" title="Word Enrichment" position="(562.0, 132.0)" />
 	</nodes>
 	<links>
 		<link id="0" source_node_id="0" sink_node_id="1" source_channel="Corpus" sink_channel="Corpus" enabled="true" source_channel_id="corpus" sink_channel_id="corpus" />
@@ -21,11 +22,12 @@
 		<link id="5" source_node_id="6" sink_node_id="8" source_channel="Data" sink_channel="Data" enabled="true" source_channel_id="data" sink_channel_id="data" />
 		<link id="6" source_node_id="5" sink_node_id="6" source_channel="Corpus" sink_channel="Data" enabled="true" source_channel_id="corpus" sink_channel_id="data" />
 		<link id="7" source_node_id="6" sink_node_id="7" source_channel="Data" sink_channel="Data" enabled="true" source_channel_id="data" sink_channel_id="data" />
+		<link id="8" source_node_id="2" sink_node_id="10" source_channel="Corpus" sink_channel="Selected Data" enabled="true" source_channel_id="corpus" sink_channel_id="selected_data" />
 	</links>
 	<annotations />
 	<thumbnail />
 	<node_properties>
-		<properties node_id="0" format="pickle">gASVJwMAAAAAAAB9lCiMEmNvbnRyb2xBcmVhVmlzaWJsZZSIjAxyZWNlbnRfZmlsZXOUXZQojDgv
+		<properties node_id="0" format="pickle">gASVMAMAAAAAAAB9lCiMEmNvbnRyb2xBcmVhVmlzaWJsZZSIjAxyZWNlbnRfZmlsZXOUXZQojDgv
 aG9tZS9sd3Mva3Vsd3MyMDI1L2t1YmlnMjAyNS9vcm5hZ2UzL2RhdGEvbHlyaWNzLXY1LmNzdpSM
 EWJvb2stZXhjZXJwdHMudGFilIwYZ3JpbW0tdGFsZXMtc2VsZWN0ZWQudGFilIwYZWxlY3Rpb24t
 dHdlZXRzLTIwMTYudGFilIwXZnJpZW5kcy10cmFuc2NyaXB0cy50YWKUjAxhbmRlcnNlbi50YWKU
@@ -39,7 +41,7 @@ dGVzlH2UKIwCaWSUSwKMC2FsYnVtX3RpdGxllEsBjA9lbmdfYWxidW1fdGl0bGWUSwGMCGFsYnVt
 X3JklEsEjAlhbGJ1bV9zZXGUSwKMDGhpZGRlbl90cmFja5RLAYwFcmVtaXiUSwGMCGZlYXR1cmVk
 lEsBjAxwZXJmb3JtZWRfYnmUSwGMCnJlcGFja2FnZWSUSwGMBGxhbmeUSwGMDGhhc19mdWxsX3Zl
 cpRLAXWMBW1ldGFzlH2UKGgaSwNoI0sDaB9LA2ghSwN1jA5kb2N1bWVudHNfaGFzaJSKEVAwlQEk
-GCFgxwdsS0JhPsUAaBZOdWJhdS4=
+GCFgxwdsS0JhPsUAjAhsYW5ndWFnZZROdWJhdS4=
 </properties>
 		<properties node_id="1" format="pickle">gASVLgMAAAAAAAB9lCiMCmF1dG9jb21taXSUiIwSY29udHJvbEFyZWFWaXNpYmxllIiME3NhdmVk
 V2lkZ2V0R2VvbWV0cnmUQ0IB2dDLAAMAAAAAAbcAAABnAAAFwgAAAxEAAAG6AAAAhQAABb8AAAMO
@@ -131,6 +133,7 @@ dGl0bGWUSwOMBmx5cmljc5RLA3V1YmgSKYGUfZQoaBV9lChoF2ghS2WGlGgaTkr+////hpRoHSlK
 /v///4aUaA1LAXVoH32UKGghSwFoIksBaBtLAXVoJn2UKGgoSwNoKUsDaCpLA2grSwN1dWJldS4=
 </properties>
 		<properties node_id="9" format="literal">{'controlAreaVisible': True, 'domain': None, 'filter_hint': None, 'header_state': b'', 'language': 'English', 'savedWidgetGeometry': None, 'selected_id': None, 'splitter_state': b'', '__version__': 2}</properties>
+		<properties node_id="10" format="literal">{'auto_apply': True, 'controlAreaVisible': True, 'filter_by_fdr': True, 'filter_by_p': False, 'filter_fdr_value': 0.2, 'filter_p_value': 0.01, 'savedWidgetGeometry': None, '__version__': 1}</properties>
 	</node_properties>
 	<session_state>
 		<window_groups />
